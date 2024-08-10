@@ -35,18 +35,16 @@ const createScene = function () {
         scene
     );
 
-    camera.attachControl(canvas, false); // Убираем возможность управления мышью
+    camera.attachControl(canvas, true); // Позволяем управлять камерой
 
     // Ограничение перемещения камеры
     camera.lowerRadiusLimit = 10; // Минимальное расстояние до модели
     camera.upperRadiusLimit = 10; // Максимальное расстояние до модели
     camera.beta = Math.PI / 2; // Угол наклона камеры
 
-    // Отключаем возможность изменения угла beta (наклона) на мобильных устройствах
-    if ('ontouchstart' in window) {
-        camera.lowerBetaLimit = Math.PI / 2; // Ограничиваем наклон
-        camera.upperBetaLimit = Math.PI / 2; // Ограничиваем наклон
-    }
+    // Устанавливаем ограничения для beta
+    camera.lowerBetaLimit = Math.PI / 2;
+    camera.upperBetaLimit = Math.PI / 2;
 
     const light = new BABYLON.HemisphericLight(
         "light",
@@ -56,33 +54,28 @@ const createScene = function () {
 
     // Создание системы частиц
     const particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
+    particleSystem.particleTexture = new BABYLON.Texture("https://plitoff.ru/wp-content/uploads/2020/10/154a1de6f6795157ee1f753c43d11c3b.jpg", scene);
+    particleSystem.emitter = new BABYLON.Vector3(0, 0, 0);
 
-    particleSystem.particleTexture = new BABYLON.Texture("https://plitoff.ru/wp-content/uploads/2020/10/154a1de6f6795157ee1f753c43d11c3b.jpg", scene); // Текстура частиц
-    particleSystem.emitter = new BABYLON.Vector3(0, 0, 0); // Позиция эмиттера (центр модели)
+    particleSystem.minEmitBox = new BABYLON.Vector3(-0.5, -1, -1);
+    particleSystem.maxEmitBox = new BABYLON.Vector3(0.5, 0.5, 1);
 
-    particleSystem.minEmitBox = new BABYLON.Vector3(-0.5, -1, -1); // Минимальная позиция эмиттера
-    particleSystem.maxEmitBox = new BABYLON.Vector3(0.5, 0.5, 1); // Максимальная позиция эмиттера
+    particleSystem.color1 = new BABYLON.Color4(110 / 255, 110 / 255, 110 / 255, 0);
+    particleSystem.color2 = new BABYLON.Color4(110 / 255, 110 / 255, 110 / 255, 10);
 
-    particleSystem.color1 = new BABYLON.Color4(110 / 255, 110 / 255, 110 / 255, 0); // Цвет частиц (белый)
-    particleSystem.color2 = new BABYLON.Color4(110 / 255, 110 / 255, 110 / 255, 10); // Цвет частиц (прозрачный)
+    particleSystem.minSize = 0.01;
+    particleSystem.maxSize = 0.05;
 
-    particleSystem.minSize = 0.01; // Минимальный размер частиц
-    particleSystem.maxSize = 0.05; // Максимальный размер частиц
+    particleSystem.emitRate = 20;
+    particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
 
-    particleSystem.emitRate = 20; // Количество частиц в секунду
-    particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE; // Режим смешивания
-
-    particleSystem.gravity = new BABYLON.Vector3(0, 3, 1); // Гравитация для частиц
+    particleSystem.gravity = new BABYLON.Vector3(0, 3, 1);
 
     particleSystem.start();
 
     BABYLON.SceneLoader.ImportMesh("", "", "untitled.glb", scene, function (meshes) {
         const model = meshes[0];
-
-        // Выравниваем модель по центру
         model.position.y = 0; // Поднимите или опустите модель, если необходимо
-
-        // Устанавливаем эмиттер частиц на позицию модели
         particleSystem.emitter = model.position;
     });
 
@@ -100,12 +93,12 @@ window.addEventListener("resize", function () {
     engine.resize();
 });
 
-// Отключаем перемещение камеры на мобильных устройствах
-if ('ontouchstart' in window) {
-    scene.activeCamera.attachControl(canvas, true);
+// Обработка касаний для управления
+canvas.addEventListener("touchstart", function (event) {
+    scene.activeCamera.attachControl(canvas);
+});
 
-    canvas.addEventListener("pointerdown", function () {
-        scene.activeCamera.detachControl(canvas);
-        scene.activeCamera.attachControl(canvas, true);
-    });
-}
+canvas.addEventListener("touchend", function (event) {
+    scene.activeCamera.detachControl(canvas);
+});
+
