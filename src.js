@@ -20,31 +20,27 @@ for (let i = 0; i < 300; i++) {
 const canvas = document.getElementById("renderCanvas");
 const engine = new BABYLON.Engine(canvas, true);
 
+// Создание сцены и камеры
 const createScene = function () {
     const scene = new BABYLON.Scene(engine);
     scene.autoClear = true;
     scene.clearColor = new BABYLON.Color4(0, 0, 0, 1);
 
-    // Создание камеры
     const camera = new BABYLON.ArcRotateCamera(
         "camera",
         Math.PI / 2,
         Math.PI / 2,
-        10, // Начальное расстояние от модели
+        10,
         new BABYLON.Vector3(0, 0, 0),
         scene
     );
 
     camera.attachControl(canvas, true);
-    // Ограничение перемещения камеры
-    camera.lowerRadiusLimit = 10; // Минимальное расстояние до модели
-    camera.upperRadiusLimit = 10; // Максимальное расстояние до модели
-    camera.beta = Math.PI / 2; // Угол наклона камеры
+    camera.lowerRadiusLimit = 10;
+    camera.upperRadiusLimit = 10;
+    camera.beta = Math.PI / 2;
     camera.lowerBetaLimit = Math.PI / 2;
     camera.upperBetaLimit = Math.PI / 2;
-
-  
-
 
     const light = new BABYLON.HemisphericLight(
         "light",
@@ -73,24 +69,22 @@ const createScene = function () {
 
     particleSystem.start();
 
+    let model; // Храним ссылку на модель
+
     BABYLON.SceneLoader.ImportMesh("", "", "untitled.glb", scene, function (meshes) {
-        const model = meshes[0];
+        model = meshes[0];
         model.position.y = 0; // Поднимите или опустите модель, если необходимо
-
-        // Вращение модели на мобильных устройствах
-        if (/Mobi|Android/i.test(navigator.userAgent)) {
-            setInterval(() => {
-                model.rotation.y += 0.01; // Скорость вращения
-            }, 16); // Примерно 60 кадров в секунду
-        }
-
         particleSystem.emitter = model.position;
+
+        // Блокируем положение модели
+        model.position.x = 0;
+        model.position.z = 0;
     });
 
-    return scene;
+    return { scene, model };
 };
 
-const scene = createScene();
+const { scene, model } = createScene();
 
 engine.runRenderLoop(function () {
     scene.render();
@@ -100,7 +94,6 @@ engine.runRenderLoop(function () {
 window.addEventListener("resize", function () {
     engine.resize();
 });
-
 
 // Переменные для отслеживания касания
 let isTouching = false;
@@ -127,6 +120,3 @@ canvas.addEventListener("touchmove", function (event) {
         lastTouchX = event.touches[0].clientX; // Обновляем последнюю позицию касания
     }
 });
-
-
-
