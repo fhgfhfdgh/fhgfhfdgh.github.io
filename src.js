@@ -117,3 +117,19 @@ window.addEventListener("resize", function () {
 });
 
 let lastTouchX = null;
+
+// --- Обработчики событий (Только вращение модели) ---
+canvas.addEventListener("touchstart", function (event) {
+    if (event.touches.length === 1) { // Только для одного пальца
+        lastTouchX = event.touches[0].clientX;
+    }
+});
+
+canvas.addEventListener("touchmove", function (event) {
+    if (model && event.touches.length === 1) { // Вращение только при одном пальце
+        event.preventDefault();
+        const deltaX = event.touches[0].clientX - lastTouchX;
+        model.rotation.y = initialRotationY + deltaX * 0.01;
+        lastTouchX = event.touches[0].clientX;
+    }
+});
