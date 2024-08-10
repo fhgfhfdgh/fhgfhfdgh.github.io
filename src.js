@@ -42,6 +42,12 @@ const createScene = function () {
     camera.upperRadiusLimit = 10; // Максимальное расстояние до модели
     camera.beta = Math.PI / 2; // Угол наклона камеры
 
+    // Отключаем возможность изменения угла beta (наклона) на мобильных устройствах
+    if ('ontouchstart' in window) {
+        camera.lowerBetaLimit = Math.PI / 2; // Ограничиваем наклон
+        camera.upperBetaLimit = Math.PI / 2; // Ограничиваем наклон
+    }
+
     const light = new BABYLON.HemisphericLight(
         "light",
         new BABYLON.Vector3(0, 1, 0),
@@ -57,8 +63,8 @@ const createScene = function () {
     particleSystem.minEmitBox = new BABYLON.Vector3(-0.5, -1, -1); // Минимальная позиция эмиттера
     particleSystem.maxEmitBox = new BABYLON.Vector3(0.5, 0.5, 1); // Максимальная позиция эмиттера
 
-    particleSystem.color1 = new BABYLON.Color4(110, 110, 110, 0); // Цвет частиц (белый)
-    particleSystem.color2 = new BABYLON.Color4(110, 110, 110, 10); // Цвет частиц (прозрачный)
+    particleSystem.color1 = new BABYLON.Color4(110 / 255, 110 / 255, 110 / 255, 0); // Цвет частиц (белый)
+    particleSystem.color2 = new BABYLON.Color4(110 / 255, 110 / 255, 110 / 255, 10); // Цвет частиц (прозрачный)
 
     particleSystem.minSize = 0.01; // Минимальный размер частиц
     particleSystem.maxSize = 0.05; // Максимальный размер частиц
