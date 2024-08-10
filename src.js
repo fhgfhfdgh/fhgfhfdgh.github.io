@@ -15,100 +15,79 @@ for (let i = 0; i < 300; i++) {
 
 }
 
-// Получаем элемент Canvas, где будет отображаться сцена
 const canvas = document.getElementById("renderCanvas");
-
-// Создаем движок Babylon.js
 const engine = new BABYLON.Engine(canvas, true);
 
-// Функция для создания сцены
 const createScene = function () {
-    // Создаем сцену
     const scene = new BABYLON.Scene(engine);
     scene.autoClear = true;
-    scene.clearColor = new BABYLON.Color4(0, 0, 0, 1); // R, G, B, A 
+    scene.clearColor = new BABYLON.Color4(0, 0, 0, 1);
 
-    
-    // Создаем камеру и задаем ее позицию
+    // Создание камеры
     const camera = new BABYLON.ArcRotateCamera(
         "camera",
-        -Math.PI / 2,
         Math.PI / 2,
-        10,
+        Math.PI / 2,
+        10, // Начальное расстояние от модели
         new BABYLON.Vector3(0, 0, 0),
         scene
     );
 
+    camera.attachControl(canvas, false); // Убираем возможность управления мышью
 
-    // ОТКЛЮЧАЕМ ПРИБЛИЖЕНИЕ/ОТДАЛЕНИЕ:
-    camera.inputs.attached.mousewheel.detachControl();
-    camera.lowerRadiusLimit = camera.upperRadiusLimit = camera.radius;
-    camera.attachControl(canvas, true);
+    // Ограничение перемещения камеры
+    camera.lowerRadiusLimit = 10; // Минимальное расстояние до модели
+    camera.upperRadiusLimit = 10; // Максимальное расстояние до модели
+    camera.beta = Math.PI / 2; // Угол наклона камеры
 
- 
-
-    // Создаем источник света
     const light = new BABYLON.HemisphericLight(
         "light",
         new BABYLON.Vector3(0, 1, 0),
         scene
     );
 
+    // Создание системы частиц
+    const particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
 
-    let particleSystem;
-    
+    particleSystem.particleTexture = new BABYLON.Texture("https://plitoff.ru/wp-content/uploads/2020/10/154a1de6f6795157ee1f753c43d11c3b.jpg", scene); // Текстура частиц
+    particleSystem.emitter = new BABYLON.Vector3(0, 0, 0); // Позиция эмиттера (центр модели)
 
-    // Загружаем 3D-модель
-    let model; 
-    BABYLON.SceneLoader.ImportMesh(
-        "",
-        "", 
-        "untitled.glb", 
-        scene,
-        function (meshes) {
-            const model = meshes[0];
+    particleSystem.minEmitBox = new BABYLON.Vector3(-0.5, -1, -1); // Минимальная позиция эмиттера
+    particleSystem.maxEmitBox = new BABYLON.Vector3(0.5, 0.5, 1); // Максимальная позиция эмиттера
 
-            // Создаем систему частиц
-            particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
-             // Источник частиц - наша модель
-            particleSystem.emitter = model; 
-            // Настройки частиц:
-            particleSystem.minEmitBox = new BABYLON.Vector3(-1, 0, -1); // Область испускания
-            particleSystem.maxEmitBox = new BABYLON.Vector3(1, 1, 1);
-            particleSystem.color1 = new BABYLON.Color4(1, 1, 1, 0.7); // Белый с прозрачностью 0.7 (70%)
-            particleSystem.minSize = 0.1;
-            particleSystem.maxSize = 0.5;
-            particleSystem.minLifeTime = 2; // Время жизни частицы (в секундах)
-            particleSystem.maxLifeTime = 5;
-            particleSystem.emitRate = 100;
-            particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE; // Для полупрозрачности
-            particleSystem.gravity = new BABYLON.Vector3(0, -0.01, 0); // Небольшая гравитация вниз
+    particleSystem.color1 = new BABYLON.Color4(110, 110, 110, 0); // Цвет частиц (белый)
+    particleSystem.color2 = new BABYLON.Color4(110, 110, 110, 10); // Цвет частиц (прозрачный)
 
-            // Запускаем систему частиц
-            particleSystem.start(); 
+    particleSystem.minSize = 0.01; // Минимальный размер частиц
+    particleSystem.maxSize = 0.05; // Максимальный размер частиц
 
-      
+    particleSystem.emitRate = 20; // Количество частиц в секунду
+    particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE; // Режим смешивания
 
+    particleSystem.gravity = new BABYLON.Vector3(0, 3, 1); // Гравитация для частиц
 
-            
-        }
-    );
+    particleSystem.start();
 
-    // Возвращаем сцену
+    BABYLON.SceneLoader.ImportMesh("", "", "untitled.glb", scene, function (meshes) {
+        const model = meshes[0];
+
+        // Выравниваем модель по центру
+        model.position.y = 0; // Поднимите или опустите модель, если необходимо
+
+        // Устанавливаем эмиттер частиц на позицию модели
+        particleSystem.emitter = model.position;
+    });
+
     return scene;
 };
 
-// Вызываем функцию создания сцены
 const scene = createScene();
 
-// Запускаем игровой цикл рендеринга
 engine.runRenderLoop(function () {
     scene.render();
 });
 
-// Изменяем размер движка при изменении размера окна
+// Обработка изменения размера окна
 window.addEventListener("resize", function () {
     engine.resize();
 });
-
-
