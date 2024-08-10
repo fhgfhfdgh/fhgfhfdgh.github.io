@@ -35,12 +35,14 @@ const createScene = function () {
         scene
     );
 
-    camera.attachControl(canvas, true);
+    // --- Блокировка камеры ---
+    camera.attachControl(canvas, false);
     camera.lowerRadiusLimit = 10;
     camera.upperRadiusLimit = 10;
     camera.beta = Math.PI / 2;
     camera.lowerBetaLimit = Math.PI / 2;
     camera.upperBetaLimit = Math.PI / 2;
+    // -------------------------
 
     const light = new BABYLON.HemisphericLight(
         "light",
@@ -70,16 +72,36 @@ const createScene = function () {
     particleSystem.start();
 
     let model; // Храним ссылку на модель
+    let initialRotationY = 0; // Начальное вращение модели
 
     BABYLON.SceneLoader.ImportMesh("", "", "untitled.glb", scene, function (meshes) {
         model = meshes[0];
-        model.position.y = 0; // Поднимите или опустите модель, если необходимо
+        model.position.y = 0;
         particleSystem.emitter = model.position;
 
         // Блокируем положение модели
         model.position.x = 0;
         model.position.z = 0;
+
+        initialRotationY = model.rotation.y;
     });
+
+    // --- Обработчики событий для вращения модели ---
+    canvas.addEventListener("touchstart", function (event) {
+        if (event.touches.length === 1) {
+            lastTouchX = event.touches[0].clientX;
+        }
+    });
+
+    canvas.addEventListener("touchmove", function (event) {
+        if (model) {
+            event.preventDefault();
+            const deltaX = event.touches[0].clientX - lastTouchX;
+            model.rotation.y = initialRotationY + deltaX * 0.01;
+            lastTouchX = event.touches[0].clientX;
+        }
+    });
+    // ------------------------------------------------
 
     return { scene, model };
 };
@@ -90,33 +112,8 @@ engine.runRenderLoop(function () {
     scene.render();
 });
 
-// Обработка изменения размера окна
 window.addEventListener("resize", function () {
     engine.resize();
 });
 
-// Переменные для отслеживания касания
-let isTouching = false;
 let lastTouchX = null;
-
-canvas.addEventListener("touchstart", function (event) {
-    if (event.touches.length === 1) { // Обрабатываем только однопальцевые касания
-        isTouching = true;
-        lastTouchX = event.touches[0].clientX; // Сохраняем начальную позицию касания
-    }
-});
-
-canvas.addEventListener("touchend", function () {
-    isTouching = false;
-});
-
-canvas.addEventListener("touchmove", function (event) {
-    if (isTouching && model) {
-        event.preventDefault(); // Предотвращаем прокрутку страницы
-
-        const deltaX = event.touches[0].clientX - lastTouchX; // Разница в движении по оси X
-        model.rotation.y += deltaX * 0.01; // Вращение модели по оси Y
-
-        lastTouchX = event.touches[0].clientX; // Обновляем последнюю позицию касания
-    }
-});
