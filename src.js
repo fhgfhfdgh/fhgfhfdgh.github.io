@@ -15,6 +15,8 @@ for (let i = 0; i < 300; i++) {
 
 }
 
+
+
 const canvas = document.getElementById("renderCanvas");
 const engine = new BABYLON.Engine(canvas, true);
 
@@ -91,3 +93,13 @@ engine.runRenderLoop(function () {
 window.addEventListener("resize", function () {
     engine.resize();
 });
+
+// Отключаем перемещение камеры на мобильных устройствах
+if ('ontouchstart' in window) {
+    scene.activeCamera.attachControl(canvas, true);
+
+    canvas.addEventListener("pointerdown", function () {
+        scene.activeCamera.detachControl(canvas);
+        scene.activeCamera.attachControl(canvas, true);
+    });
+}
