@@ -76,6 +76,14 @@ const createScene = function () {
     BABYLON.SceneLoader.ImportMesh("", "", "untitled.glb", scene, function (meshes) {
         const model = meshes[0];
         model.position.y = 0; // Поднимите или опустите модель, если необходимо
+
+        // Вращение модели на мобильных устройствах
+        if (/Mobi|Android/i.test(navigator.userAgent)) {
+            setInterval(() => {
+                model.rotation.y += 0.01; // Скорость вращения
+            }, 16); // Примерно 60 кадров в секунду
+        }
+
         particleSystem.emitter = model.position;
     });
 
@@ -93,12 +101,8 @@ window.addEventListener("resize", function () {
     engine.resize();
 });
 
-// Обработка касаний для управления
-canvas.addEventListener("touchstart", function (event) {
-    scene.activeCamera.attachControl(canvas);
-});
-
-canvas.addEventListener("touchend", function (event) {
-    scene.activeCamera.detachControl(canvas);
-});
+// Отключаем управление камерой на мобильных устройствах
+if (/Mobi|Android/i.test(navigator.userAgent)) {
+    camera.detachControl(canvas);
+}
 
