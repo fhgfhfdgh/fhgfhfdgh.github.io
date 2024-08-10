@@ -35,16 +35,16 @@ const createScene = function () {
         scene
     );
 
-    camera.attachControl(canvas, true); // Позволяем управлять камерой
-
+    camera.attachControl(canvas, true);
     // Ограничение перемещения камеры
     camera.lowerRadiusLimit = 10; // Минимальное расстояние до модели
     camera.upperRadiusLimit = 10; // Максимальное расстояние до модели
     camera.beta = Math.PI / 2; // Угол наклона камеры
-
-    // Устанавливаем ограничения для beta
     camera.lowerBetaLimit = Math.PI / 2;
     camera.upperBetaLimit = Math.PI / 2;
+
+  
+
 
     const light = new BABYLON.HemisphericLight(
         "light",
@@ -101,11 +101,32 @@ window.addEventListener("resize", function () {
     engine.resize();
 });
 
-// Отключаем управление камерой на мобильных устройствах
-if (/Mobi|Android/i.test(navigator.userAgent)) {
-    camera.detachControl(canvas);
-}
 
+// Переменные для отслеживания касания
+let isTouching = false;
+let lastTouchX = null;
+
+canvas.addEventListener("touchstart", function (event) {
+    if (event.touches.length === 1) { // Обрабатываем только однопальцевые касания
+        isTouching = true;
+        lastTouchX = event.touches[0].clientX; // Сохраняем начальную позицию касания
+    }
+});
+
+canvas.addEventListener("touchend", function () {
+    isTouching = false;
+});
+
+canvas.addEventListener("touchmove", function (event) {
+    if (isTouching && model) {
+        event.preventDefault(); // Предотвращаем прокрутку страницы
+
+        const deltaX = event.touches[0].clientX - lastTouchX; // Разница в движении по оси X
+        model.rotation.y += deltaX * 0.01; // Вращение модели по оси Y
+
+        lastTouchX = event.touches[0].clientX; // Обновляем последнюю позицию касания
+    }
+});
 
 
 
