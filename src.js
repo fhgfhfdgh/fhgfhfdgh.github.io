@@ -134,7 +134,6 @@ canvas.addEventListener("touchstart", (event) => {
   previousPosition = { x: event.touches[0].clientX, y: event.touches[0].clientY };
 });
 
-
 canvas.addEventListener("touchmove", (event) => {
     event.preventDefault();
     if (model && event.touches.length > 0) { // ѕровер€ем наличие активных касаний
@@ -145,19 +144,33 @@ canvas.addEventListener("touchmove", (event) => {
         previousPosition = currentPosition;
     }
 });
-
-
-
 // ---  онец управлени€ вращением ---
 const { scene, model } = createScene();
 
 engine.runRenderLoop(function () {
     scene.render();
 });
-
 window.addEventListener("resize", function () {
     engine.resize();
     // ƒополнительно: принудительно обновл€ем размеры Canvas 
     canvas.width = canvas.clientWidth;
     canvas.height = canvas.clientHeight;
 });
+window.onload = function () {
+    // ѕровер€ем, что приложение запущено в Telegram
+    if (window.Telegram && window.Telegram.WebApp) {
+        // ”станавливаем размеры приложени€
+        Telegram.WebApp.resize();
+
+        // —лушаем событие изменени€ размера
+        Telegram.WebApp.onEvent('resize', function () {
+            Telegram.WebApp.resize();
+        });
+
+        // ¬ы можете получить информацию о пользователе
+        const user = Telegram.WebApp.initDataUnsafe.user;
+        console.log(user);
+    } else {
+        console.error("Ёто приложение должно быть запущено в Telegram.");
+    }
+};
