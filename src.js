@@ -1,22 +1,3 @@
-
-for (let i = 0; i < 300; i++) {
-    const star = document.createElement('div');
-    star.classList.add('star');
-
-    const x = Math.random() * window.innerWidth;
-    const y = Math.random() * window.innerHeight;
-    const delay = Math.random() * 10;
-
-    star.style.left = x + 'px';
-    star.style.top = y + 'px';
-    star.style.animationDelay = delay + 's';
-
-    document.body.appendChild(star);
-
-}
-
-
-
 const canvas = document.getElementById("renderCanvas");
 const engine = new BABYLON.Engine(canvas, true);
 
@@ -42,7 +23,9 @@ const createScene = function () {
     camera.beta = Math.PI / 2;
     camera.lowerBetaLimit = Math.PI / 2;
     camera.upperBetaLimit = Math.PI / 2;
-    // -------------------------
+    // Дополнительно блокируем перемещение камеры
+    camera.panningSensibility = 0; // Отключаем панорамирование
+    camera.wheelPrecision = 0; // Отключаем масштабирование
 
     const light = new BABYLON.HemisphericLight(
         "light",
@@ -50,6 +33,47 @@ const createScene = function () {
         scene
     );
 
+    // --- Создание звезд ---
+    function createStar(name, size, position) {
+        const star = BABYLON.MeshBuilder.CreateSphere(
+            name,
+            { diameter: size },
+            scene
+        );
+        star.position = position;
+
+        // Create a unique material for each star
+        const starMaterial = new BABYLON.StandardMaterial(`starMaterial${name}`, scene);
+        starMaterial.emissiveColor = new BABYLON.Color3(1, 1, 1);
+        star.material = starMaterial;
+
+        // Анимация мерцания 
+        const animation = new BABYLON.Animation(
+            "starAnimation",
+            "material.alpha", // Animate the material's alpha property
+            40,
+            BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+            BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE
+        );
+
+        const keys = [];
+        keys.push({ frame: 0, value: 1 });     // Fully opaque
+        keys.push({ frame: 15, value: 0.5 });  // Semi-transparent
+        keys.push({ frame: 30, value: 1 });     // Fully opaque again
+
+        animation.setKeys(keys);
+
+        star.animations.push(animation);
+        scene.beginAnimation(star, 0, 30, true, Math.random() * 2 - 1);
+    }
+
+    for (let i = 0; i < 300; i++) {
+        const size = Math.random() * 0.2 + 0.1;
+        const x = Math.random() * 200 - 100;
+        const y = Math.random() * 200 - 100;
+        const z = Math.random() * 200 - 100;
+        createStar("star" + i, size, new BABYLON.Vector3(x, y, z));
+    }
     // Создание системы частиц
     const particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene);
     particleSystem.particleTexture = new BABYLON.Texture("https://plitoff.ru/wp-content/uploads/2020/10/154a1de6f6795157ee1f753c43d11c3b.jpg", scene);
@@ -83,26 +107,18 @@ const createScene = function () {
         model.position.x = 0;
         model.position.z = 0;
 
+        // Блокируем перемещение и масштабирование модели
+        model.isPickable = false;
+        // Отключаем выбор мышью
+
         initialRotationY = model.rotation.y;
     });
-
-    // --- Обработчики событий для вращения модели ---
-    canvas.addEventListener("touchstart", function (event) {
-        if (event.touches.length === 1) {
-            lastTouchX = event.touches[0].clientX;
-        }
-    });
-
-    canvas.addEventListener("touchmove", function (event) {
+    // Анимация вращения модели (если нужно)
+    scene.registerBeforeRender(function () {
         if (model) {
-            event.preventDefault();
-            const deltaX = event.touches[0].clientX - lastTouchX;
-            model.rotation.y = initialRotationY + deltaX * 0.01;
-            lastTouchX = event.touches[0].clientX;
+            model.rotation.y += 0.01;
         }
     });
-    // ------------------------------------------------
-
     return { scene, model };
 };
 
@@ -114,22 +130,4 @@ engine.runRenderLoop(function () {
 
 window.addEventListener("resize", function () {
     engine.resize();
-});
-
-let lastTouchX = null;
-
-// --- Обработчики событий (Только вращение модели) ---
-canvas.addEventListener("touchstart", function (event) {
-    if (event.touches.length === 1) { // Только для одного пальца
-        lastTouchX = event.touches[0].clientX;
-    }
-});
-
-canvas.addEventListener("touchmove", function (event) {
-    if (model && event.touches.length === 1) { // Вращение только при одном пальце
-        event.preventDefault();
-        const deltaX = event.touches[0].clientX - lastTouchX;
-        model.rotation.y = initialRotationY + deltaX * 0.01;
-        lastTouchX = event.touches[0].clientX;
-    }
 });
