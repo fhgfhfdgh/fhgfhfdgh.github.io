@@ -122,30 +122,28 @@ const createScene = function () {
     return { scene, model };
 };
 // --- Вращение модели с помощью касаний ---
-let isDragging = false;
 let previousPosition = { x: 0, y: 0 };
 
 canvas.addEventListener("touchstart", (event) => {
-    event.preventDefault(); // Предотвращаем стандартное поведение (прокрутку страницы)
-    isDragging = true;
-    previousPosition = { x: event.touches[0].clientX, y: event.touches[0].clientY };
+  event.preventDefault(); // Предотвращаем стандартное поведение (прокрутку страницы)
+  isDragging = true;
+  previousPosition = { x: event.touches[0].clientX, y: event.touches[0].clientY };
 });
 
+
 canvas.addEventListener("touchmove", (event) => {
-    if (isDragging && model) {
+    event.preventDefault();
+    if (model && event.touches.length > 0) { // Проверяем наличие активных касаний
         const currentPosition = { x: event.touches[0].clientX, y: event.touches[0].clientY };
         const deltaX = currentPosition.x - previousPosition.x;
 
-        // Настройте скорость вращения по своему вкусу
         model.rotation.y += deltaX * 0.01;
-
         previousPosition = currentPosition;
     }
 });
 
-canvas.addEventListener("touchend", () => {
-    isDragging = false;
-});
+
+
 // --- Конец управления вращением ---
 const { scene, model } = createScene();
 

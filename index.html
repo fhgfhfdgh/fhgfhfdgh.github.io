@@ -12,6 +12,11 @@
             width: 100vw;
             height: 100vh;
         }
+        #renderCanvas {
+            touch-action: none; /* Отключаем все жесты касания по умолчанию */
+            -webkit-tap-highlight-color: transparent; /* Убираем выделение в Safari */
+        }
+   
 
         .star {
             position: absolute;
