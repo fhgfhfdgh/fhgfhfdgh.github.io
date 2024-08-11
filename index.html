@@ -13,9 +13,17 @@
             height: 100vh;
         }
         #renderCanvas {
-            touch-action: none; /* Отключаем все жесты касания по умолчанию */
-            -webkit-tap-highlight-color: transparent; /* Убираем выделение в Safari */
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
+            -webkit-touch-callout: none; /* Отключение баннера в Safari */
+            -webkit-user-select: none; /* Отключение выделения текста */
+            
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            touch-action: none;
         }
+   
+
    
 
         .star {

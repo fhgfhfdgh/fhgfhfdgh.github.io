@@ -6,7 +6,11 @@ const createScene = function () {
     const scene = new BABYLON.Scene(engine);
     scene.autoClear = true;
     scene.clearColor = new BABYLON.Color4(0, 0, 0, 1);
-
+    window.addEventListener("deviceorientation", (event) => {
+        if (model) {
+            model.rotation.y = event.gamma * 0.02; // Пример: вращение по оси Y
+        }
+    });
     const camera = new BABYLON.ArcRotateCamera(
         "camera",
         Math.PI / 2,
@@ -153,4 +157,7 @@ engine.runRenderLoop(function () {
 
 window.addEventListener("resize", function () {
     engine.resize();
+    // Дополнительно: принудительно обновляем размеры Canvas 
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
 });
