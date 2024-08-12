@@ -1,45 +1,103 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clicker</title>
     <style>
         body {
             background-color: black;
-            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             margin: 0;
-        }
-
-        #renderCanvas {
-            width: 100%;
-            height: 100%;
-            touch-action: none;
+            font-family: sans-serif;
+            overflow: hidden;
         }
 
         .container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            position: absolute; /* Размещаем поверх канваса */
-            top: 0;
-            left: 0;
+            position: relative; /* To position the canvas */
             width: 100%;
             height: 100%;
-            z-index: 10; /* Устанавливаем z-index выше, чем у канваса */
+        }
+
+        .circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: white;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .score-container {
+            margin-top: 20px;
+            padding: 10px;
+            border: 3px solid transparent;
+            border-radius: 10px;
+            background-clip: padding-box;
+            position: relative; /* Для позиционирования фона */
+            /* Удаляем фон */
+            /* background-image: linear-gradient(...); */
+        }
+
+        .gradient-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 10px;
+            background-image: linear-gradient(to bottom, blue, transparent);
+            z-index: -1;
+        }
+
+        .circle:active {
+            outline: none; /* Убираем стандартное выделение */
+        }
+
+        .score-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 3px solid blue;
+            border-radius: 10px;
+            background-image: linear-gradient(to bottom, blue, transparent); /* Градиент от синего к прозрачному */
+            pointer-events: none; /* Делаем псевдоэлемент некликабельным */
+        }
+
+        .score {
+            color: white;
+            font-size: 24px;
+            position: relative; /* Позиционируем текст поверх псевдоэлемента */
+        }
+        #model-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30vh; /* Adjust height as needed */
         }
     </style>
 </head>
 <body>
-    <canvas id="renderCanvas"></canvas>
     <div class="container">
-
+        <div class="circle" id="clickable-circle"></div>
         <div class="score-container">
-            <div class="gradient-background"></div>
-            <span class="score">Score: <span id="score-value">0</span></span>
+            <div class="gradient-background"></div> <span class="score">Score: <span id="score-value">0</span></span>
         </div>
-    </div>
+        <div id="model-container"></div>
 
-    <script src="https://cdn.babylonjs.com/babylon.js"></script>
-    <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+    </div>
+    <script src="https://threejs.org/build/three.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.0/examples/js/loaders/GLTFLoader.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="src.js"></script>
 </body>
