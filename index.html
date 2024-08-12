@@ -29,12 +29,34 @@
             cursor: pointer;
         }
 
+            
+
+        
+
         .score-container {
             margin-top: 20px;
             padding: 10px;
-            border: 3px solid transparent; /* Скрываем внешнюю границу */
+            border: 3px solid transparent;
             border-radius: 10px;
-            background-clip: padding-box; /* Обрезаем фон по padding-box */
+            background-clip: padding-box;
+            position: relative; /* Для позиционирования фона */
+            /* Удаляем фон */
+            /* background-image: linear-gradient(...); */
+        }
+
+        .gradient-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 10px;
+            background-image: linear-gradient(to bottom, blue, transparent);
+            z-index: -1;
+        }
+
+        .circle:active {
+            outline: none; /* Убираем стандартное выделение */
         }
 
             .score-container::before {
@@ -61,7 +83,7 @@
     <div class="container">
         <div class="circle" id="clickable-circle"></div>
         <div class="score-container">
-            <span class="score">Score: <span id="score-value">0</span></span>
+            <div class="gradient-background"></div> <span class="score">Score: <span id="score-value">0</span></span>
         </div>
     </div>
 
