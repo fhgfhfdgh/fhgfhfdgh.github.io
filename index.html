@@ -1,51 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>Собираем монетки!</title>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Монетки</title>
     <style>
         body {
-            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             height: 100vh;
-            position: relative;
-            overflow: hidden;
-            font-family: sans-serif;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
         }
 
-        #coin-container {
-            position: absolute;
-            width: 100%;
-            height: 100%;
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .coin {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            background-image: url('https://i.imgur.com/yMCyF2N.png'); /* Замените на URL вашей картинки монетки */
-            background-size: cover;
+        .coin-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
         }
 
-        #score {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 20px;
+            .coin-button:hover {
+                background-color: #45a049;
+            }
+
+        .coin-count {
+            margin-top: 20px;
+            font-size: 24px;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <h1>пизда залупа пенис хер</h1>
+        <button class="coin-button" id="addCoinButton">ауе</button>
+        <div class="coin-count" id="coinCount">внутренний долг америки: 0</div>
+    </div>
+    <div id="coin-container"></div>
+    <div id="score">внутренний долг америки: 0</div>
+
+
     <script src="https://cdn.babylonjs.com/babylon.js"></script>
     <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="src.js"></script>
-    <div id="coin-container"></div>
-    <div id="score">Монетки: 0</div>
-
-    
 
 
-    </body>
+  
+</body>
 </html>
