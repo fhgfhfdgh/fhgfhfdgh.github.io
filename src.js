@@ -1,16 +1,8 @@
 let tg = window.Telegram.WebApp;
-document.addEventListener('DOMContentLoaded', () => {
-    if (typeof tg !== 'undefined' && tg.ThemeParams) {
-        tg.ThemeParams.secondary_bg_color('#000000'); // Устанавливаем черный цвет
-    } else {
-        console.log('tg или tg.ThemeParams не определены');
-    }
-});
-
-//tg.themeParams.bg_color('#33FFFF');
+tg.ThemeParams.secondary_bg_color ='9933FF'; 
 tg.expand() // метод позволяет растянуть окно на всю высоту.
 
-
+tg.bg_color = "#F55353";
 const star = document.getElementById('star');
 
 function updateStarPosition(x, y) {
