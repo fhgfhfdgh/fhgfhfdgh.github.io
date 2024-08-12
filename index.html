@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+
         body {
             height: 100vh;
             margin: 0;
@@ -28,26 +29,7 @@
 </head>
 <body>
     <div id="star"></div>
-    <script>
-        const star = document.getElementById('star');
-
-        function updateStarPosition(x, y) {
-            const offsetX = (x / window.innerWidth - 0.5) * 100; // Увеличиваем значение для большего эффекта
-            const offsetY = (y / window.innerHeight - 0.5) * -30; // Меняем знак для правильного направления
-
-            // Применяем трансформацию
-            star.style.transform = 'rotateY(' + offsetX + 'deg) rotateX(' + offsetY + 'deg)';
-        }
-
-        document.addEventListener('mousemove', (e) => {
-            updateStarPosition(e.clientX, e.clientY);
-        });
-
-        // Обработка касаний
-        document.addEventListener('touchmove', (e) => {
-            const touch = e.touches[0]; // Получаем первое касание
-            updateStarPosition(touch.clientX, touch.clientY);
-        });
-    </script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="src.js"></script>
 </body>
 </html>

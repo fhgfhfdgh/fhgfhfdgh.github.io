@@ -1,41 +1,22 @@
-// Сцена, камера и рендерер
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+let tg = window.Telegram.WebApp;
+tg.expand() // метод позволяет растянуть окно на всю высоту.
+tg.ThemeParams.bg_color('#0C0F13');
+const star = document.getElementById('star');
 
-// Добавляем освещение
-const light = new THREE.AmbientLight(0xffffff, 1);
-scene.add(light);
+function updateStarPosition(x, y) {
+    const offsetX = (x / window.innerWidth - 0.5) * 100; // Увеличиваем значение для большего эффекта
+    const offsetY = (y / window.innerHeight - 0.5) * -30; // Меняем знак для правильного направления
 
-// Загрузка модели
-const loader = new THREE.GLTFLoader();
-loader.load('untitled.glb', (gltf) => {
-    scene.add(gltf.scene);
-    gltf.scene.position.set(0, 0, 0);
-}, undefined, (error) => {
-    console.error(error);
+    // Применяем трансформацию
+    star.style.transform = 'rotateY(' + offsetX + 'deg) rotateX(' + offsetY + 'deg)';
+}
+
+document.addEventListener('mousemove', (e) => {
+    updateStarPosition(e.clientX, e.clientY);
 });
 
-// Управление камерой
-const controls = new THREE.OrbitControls(camera, renderer.domElement);
-camera.position.set(0, 1, 3);
-controls.enableDamping = true; // плавное движение
-controls.dampingFactor = 0.25;
-
-// Обработка изменения размера окна
-window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+// Обработка касаний
+document.addEventListener('touchmove', (e) => {
+    const touch = e.touches[0]; // Получаем первое касание
+    updateStarPosition(touch.clientX, touch.clientY);
 });
-
-// Анимация
-const animate = function () {
-    requestAnimationFrame(animate);
-    controls.update(); // обновление управления
-    renderer.render(scene, camera);
-};
-
-animate();
