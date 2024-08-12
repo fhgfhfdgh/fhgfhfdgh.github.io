@@ -1,3 +1,6 @@
+let tg = window.Telegram.WebApp;
+tg.expand() // метод позволяет растянуть окно на всю высоту.
+
 const canvas = document.getElementById('renderCanvas');
 const engine = new BABYLON.Engine(canvas, true);
 
@@ -16,13 +19,13 @@ const createScene = () => {
     // Загрузка модели
     BABYLON.SceneLoader.ImportMesh("",
         "",  // путь к модели, если она в том же каталоге, что и index.html
-        "untitled.glb", // имя файла модели 
+        "untitled.glb", // имя файла модели
         scene,
         function (meshes) {
             const model = meshes[0];
             // Масштабирование и позиционирование по необходимости
-            // model.scaling = new BABYLON.Vector3(0.1, 0.1, 0.1); 
-            // model.position.y = -1; 
+            model.scaling = new BABYLON.Vector3(0.1, 0.1, 0.1); 
+            model.position.y = -1; 
         });
 
     // Обработка свайпа
@@ -76,4 +79,3 @@ canvas.addEventListener('click', () => {
     localStorage.setItem('score', score);
     scoreValue.textContent = score;
 });
-```
