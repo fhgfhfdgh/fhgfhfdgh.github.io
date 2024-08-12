@@ -23,7 +23,7 @@ const loader = new THREE.GLTFLoader();
 
 let model;
 loader.load(
-    'your_model.glb', // Replace with your model's path
+    'untitled.glb', // Replace with your model's path
     function (gltf) {
         model = gltf.scene;
         model.scale.set(0.5, 0.5, 0.5); // Adjust scaling as needed
