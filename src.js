@@ -1,57 +1,41 @@
-function loadScript(src) {
-    return new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.src = src;
-        script.onload = resolve;
-        script.onerror = reject;
-        document.head.appendChild(script);
-    });
-}
-async function init3DScene() {
-    try {
-        // Загрузка Three.js
-        await loadScript('https://threejs.org/build/three.js');
+// Сцена, камера и рендерер
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
 
-        // Создание сцены, камеры и рендерера
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.getElementById('model-container').appendChild(renderer.domElement);
+// Добавляем освещение
+const light = new THREE.AmbientLight(0xffffff, 1);
+scene.add(light);
 
-        // Загрузка 3D-модели (например, в формате glTF)
-        const loader = new THREE.GLTFLoader();
-        loader.load(
-            'untitled.gltf',
-            (gltf) => {
-                const model = gltf.scene;
-                scene.add(model);
-            },
-            undefined,
-            (error) => {
-                console.error('Ошибка при загрузке модели:', error);
-            }
-        );
+// Загрузка модели
+const loader = new THREE.GLTFLoader();
+loader.load('untitled.glb', (gltf) => {
+    scene.add(gltf.scene);
+    gltf.scene.position.set(0, 0, 0);
+}, undefined, (error) => {
+    console.error(error);
+});
 
-        // Настройка камеры 
-        camera.position.z = 5;
+// Управление камерой
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+camera.position.set(0, 1, 3);
+controls.enableDamping = true; // плавное движение
+controls.dampingFactor = 0.25;
 
-        // Функция анимации
-        function animate() {
-            requestAnimationFrame(animate);
-            // Вращение модели 
-            // model.rotation.y += 0.01; 
-            renderer.render(scene, camera);
-        }
+// Обработка изменения размера окна
+window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
 
-        // Запуск анимации
-        animate();
+// Анимация
+const animate = function () {
+    requestAnimationFrame(animate);
+    controls.update(); // обновление управления
+    renderer.render(scene, camera);
+};
 
-    } catch (error) {
-        console.error('Ошибка инициализации 3D-сцены:', error);
-    }
-}
-
-// Инициализация после загрузки страницы
-window.addEventListener('load', init3DScene);
-
+animate();

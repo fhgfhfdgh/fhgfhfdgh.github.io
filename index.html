@@ -1,19 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Model Viewer</title>
-    <link rel="stylesheet" href="https://unpkg.com/lighthouse3d/dist/lighthouse.min.css">
-    
+    <style>
+        body {
+            margin: 0;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
 </head>
 <body>
-    <h1>My 3D Model Viewer</h1>
-    <div id="model-container"></div>
-
-    <script src="https://unpkg.com/lighthouse3d/dist/lighthouse.min.js"></script>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="three.module.min.js"></script>
+    <script src="GLTFLoader.js"></script>
+    <script src="OrbitControls.js"></script>
     <script src="src.js"></script>
 </body>
 </html>
-
