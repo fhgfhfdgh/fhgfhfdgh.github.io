@@ -1,63 +1,57 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Монетки</title>
+    <title>Clicker</title>
     <style>
         body {
+            background-color: black;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0;
-            font-family: Arial, sans-serif;
+            margin: 0;
+            font-family: sans-serif;
         }
 
         .container {
-            text-align: center;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .coin-button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
+        .circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: white;
             cursor: pointer;
         }
 
-            .coin-button:hover {
-                background-color: #45a049;
-            }
-
-        .coin-count {
+        .score-container {
             margin-top: 20px;
+            padding: 10px;
+            border: 3px solid blue;
+            border-radius: 10px;
+        }
+
+        .score {
+            color: white;
             font-size: 24px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>пизда залупа пенис хер</h1>
-        <button class="coin-button" id="addCoinButton">ауе</button>
-        <div class="coin-count" id="coinCount">внутренний долг америки: 0</div>
+        <div class="circle" id="clickable-circle"></div>
+        <div class="score-container">
+            <span class="score">Score: <span id="score-value">0</span></span>
+        </div>
     </div>
-    <div id="coin-container"></div>
-    <div id="score">внутренний долг америки: 0</div>
-
-
     <script src="https://cdn.babylonjs.com/babylon.js"></script>
     <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="src.js"></script>
-
-
-  
 </body>
 </html>

@@ -1,8 +1,10 @@
-let coinCount = 0;
+const circle = document.getElementById('clickable-circle');
+const scoreValue = document.getElementById('score-value');
+let score = localStorage.getItem('score') || 0;
+scoreValue.textContent = score;
 
-document.getElementById('addCoinButton').onclick = function () {
-    coinCount++;
-    document.getElementById('coinCount').innerText = 'Монетки: ' + coinCount;
-
-// Здесь можно добавить код для отправки данных на сервер или обновления состояния
-};
+circle.addEventListener('click', () => {
+    score++;
+    localStorage.setItem('score', score);
+    scoreValue.textContent = score;
+});
