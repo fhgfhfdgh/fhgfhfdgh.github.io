@@ -22,6 +22,10 @@ document.addEventListener('touchmove', (e) => {
     const touch = e.touches[0]; // Получаем первое касание
     updateStarPosition(touch.clientX, touch.clientY);
 });
+// Возвращаем звезду на место при отпускании пальца
+document.addEventListener('touchend', () => {
+    star.style.transform = 'rotateY(0deg) rotateX(0deg)';
+});
 function createSparkle() {
     const sparkle = document.createElement('div');
     sparkle.classList.add('sparkle');
