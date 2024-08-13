@@ -1,8 +1,8 @@
 let tg = window.Telegram.WebApp;
-tg.ThemeParams.secondary_bg_color ='9933FF'; 
+tg.setHeaserColor('#ff0000')
 tg.expand() // метод позволяет растянуть окно на всю высоту.
 
-tg.bg_color = "#F55353";
+
 const star = document.getElementById('star');
 
 function updateStarPosition(x, y) {
