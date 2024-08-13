@@ -22,3 +22,21 @@ document.addEventListener('touchmove', (e) => {
     const touch = e.touches[0]; // Получаем первое касание
     updateStarPosition(touch.clientX, touch.clientY);
 });
+function createSparkle() {
+    const sparkle = document.createElement('div');
+    sparkle.classList.add('sparkle');
+
+    // Позиционируем блестку случайным образом
+    sparkle.style.left = Math.random() * window.innerWidth + 'px';
+    sparkle.style.top = Math.random() * window.innerHeight + 'px';
+
+    document.body.appendChild(sparkle);
+
+    // Удаляем блестку через некоторое время
+    setTimeout(() => {
+        sparkle.remove();
+    }, 2000);
+}
+
+// Создаем блестки каждую секунду
+setInterval(createSparkle, 200);

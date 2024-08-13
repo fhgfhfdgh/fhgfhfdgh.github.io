@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-
         body {
             height: 100vh;
             margin: 0;
@@ -12,22 +11,45 @@
             justify-content: center;
             align-items: center;
             perspective: 1000px; /* Добавляем перспективу */
-            background-color: #282c34; /* Цвет фона */
-            --bg-color: var(--tg-theme-bg-color, #fff);
-            color: var(--tg-theme-text-color, #222);
+            background-color: #000000; /* Цвет фона */
+            overflow: hidden; /* Скрываем переполнение */
         }
 
         #star {
             width: 100px; /* Размер звезды */
             height: 100px;
-            background: gold; /* Цвет звезды */
+            background: #FF1B60; /* Цвет звезды */
             clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
             position: absolute; /* Фиксируем звезду */
             transition: transform 0.1s; /* Плавный переход */
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); /* Эффект тени */
+            box-shadow: 0 0 100px rgba(175, 16, 63, 0.5); /* Эффект тени */
+        }
+        .sparkle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: sparkle-animation 2.5s infinite;
+        }
+        @keyframes sparkle-animation {
+            0% {
+                opacity: 0;
+                transform: scale(0);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(0);
+            }
         }
     </style>
-    <title>Объемная звезда</title>
+    <title>star</title>
 </head>
 <body>
     <div id="star"></div>
