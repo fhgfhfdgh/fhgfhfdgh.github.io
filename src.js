@@ -1,5 +1,5 @@
 let tg = window.Telegram.WebApp;
-tg.setHeaserColor('#ff0000');
+tg.setHeaderColor('#ff0000');
 tg.expand() // метод позволяет растянуть окно на всю высоту.
 
 
