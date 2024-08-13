@@ -3,14 +3,14 @@ tg.setHeaderColor('#000000');
 tg.expand() // метод позволяет растянуть окно на всю высоту.
 
 
-const triangle = document.getElementById('image-container');
+const imageContainer = document.getElementById('image-container');
 
 function updateImagePosition(x, y) {
     const offsetX = (x / window.innerWidth - 0.5) * 100; // Увеличиваем значение для большего эффекта
     const offsetY = (y / window.innerHeight - 0.5) * -30; // Меняем знак для правильного направления
 
     // Применяем трансформацию
-    triangle.style.transform = 'rotateY(' + offsetX + 'deg) rotateX(' + offsetY + 'deg)';
+    imageContainer.style.transform = 'rotateY(' + offsetX + 'deg) rotateX(' + offsetY + 'deg)';
 }
 
 document.addEventListener('mousemove', (e) => {
@@ -25,11 +25,9 @@ document.addEventListener('touchmove', (e) => {
 });
 // Возвращаем звезду на место при отпускании пальца
 document.addEventListener('touchend', () => {
-    ImageContainer.style.transform = 'rotateY(0deg) rotateX(0deg)';
+    imageContainer.style.transform = 'rotateY(0deg) rotateX(0deg)';
 });
-document.addEventListener('touchend', () => {
-    imagecontainer.style.transform = 'rotateY(0deg) rotateX(0deg)';
-});
+
 
 // Функция для создания блесток
 function createSparkles() {
