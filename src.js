@@ -33,26 +33,26 @@ document.addEventListener('touchend', () => {
 
 imageContainer.addEventListener('mousemove', (event) => {
     const { offsetWidth, offsetHeight } = imageContainer;
-    const x = event.offsetX / offsetWidth;
-    const y = event.offsetY / offsetHeight;
+    const x = (event.offsetX / offsetWidth) - 0.5; // Центрируем
+    const y = (event.offsetY / offsetHeight) - 0.5; // Центрируем
 
     // Рассчитываем углы поворота
-    const rotateX = (y - 0.5) * 30; // Вращение по оси X
-    const rotateY = (x - 0.5) * 30; // Вращение по оси Y
-
+    const rotateX = y * 30; // Вращение по оси X
+    const rotateY = x * 30; // Вращение по оси Y
     // Применяем трансформацию к изображению
     image.style.transform = 'rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)';
 });
+
 
 // Для мобильных устройств
 imageContainer.addEventListener('touchmove', (event) => {
     const touch = event.touches[0];
     const { offsetWidth, offsetHeight } = imageContainer;
-    const x = (touch.clientX - imageContainer.offsetLeft) / offsetWidth;
-    const y = (touch.clientY - imageContainer.offsetTop) / offsetHeight;
+    const x = (touch.clientX - imageContainer.offsetLeft) / offsetWidth - 0.5;
+    const y = (touch.clientY - imageContainer.offsetTop) / offsetHeight - 0.5;
 
-    const rotateX = (y - 0.5) * 30;
-    const rotateY = (x - 0.5) * 30;
+    const rotateX = y * 30;
+    const rotateY = x * 30;
 
     image.style.transform = 'rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg)';
 });
