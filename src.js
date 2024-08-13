@@ -3,44 +3,42 @@ tg.setHeaderColor('#000000');
 tg.expand() // метод позволяет растянуть окно на всю высоту.
 
 
-const star = document.getElementById('star');
+const triangle = document.getElementById('image-container');
 
-function updateStarPosition(x, y) {
+function updateImagePosition(x, y) {
     const offsetX = (x / window.innerWidth - 0.5) * 100; // Увеличиваем значение для большего эффекта
     const offsetY = (y / window.innerHeight - 0.5) * -30; // Меняем знак для правильного направления
 
     // Применяем трансформацию
-    star.style.transform = 'rotateY(' + offsetX + 'deg) rotateX(' + offsetY + 'deg)';
+    triangle.style.transform = 'rotateY(' + offsetX + 'deg) rotateX(' + offsetY + 'deg)';
 }
 
 document.addEventListener('mousemove', (e) => {
-    updateStarPosition(e.clientX, e.clientY);
+    updateImagePosition(e.clientX, e.clientY);
 });
 
 // Обработка касаний
 document.addEventListener('touchmove', (e) => {
+    e.preventDefault(); // Предотвращаем прокрутку
     const touch = e.touches[0]; // Получаем первое касание
-    updateStarPosition(touch.clientX, touch.clientY);
+    updateImagePosition(touch.clientX, touch.clientY);
 });
 // Возвращаем звезду на место при отпускании пальца
 document.addEventListener('touchend', () => {
-    star.style.transform = 'rotateY(0deg) rotateX(0deg)';
+    imageContainer.style.transform = 'rotateY(0deg) rotateX(0deg)';
 });
-function createSparkle() {
-    const sparkle = document.createElement('div');
-    sparkle.classList.add('sparkle');
-
-    // Позиционируем блестку случайным образом
-    sparkle.style.left = Math.random() * window.innerWidth + 'px';
-    sparkle.style.top = Math.random() * window.innerHeight + 'px';
-
-    document.body.appendChild(sparkle);
-
-    // Удаляем блестку через некоторое время
-    setTimeout(() => {
-        sparkle.remove();
-    }, 2000);
+// Функция для создания блесток
+function createSparkles() {
+    for (let i = 0; i < 20; i++) { // Создаем 20 блесток
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        sparkle.style.width = Math.random() * 2 + 'px'; // Случайный размер
+        sparkle.style.height = sparkle.style.width; // Делаем круглыми
+        sparkle.style.top = Math.random() * window.innerHeight + 'px'; // Случайная позиция по вертикали
+        sparkle.style.left = Math.random() * window.innerWidth + 'px'; // Случайная позиция по горизонтали
+        sparkle.style.animationDuration = Math.random() * 1 + 1 + 's'; // Случайная продолжительность анимации
+        document.body.appendChild(sparkle);
+    }
 }
 
-// Создаем блестки каждую секунду
-setInterval(createSparkle, 200);
+createSparkles(); // Создаем блестки при загрузке страницы

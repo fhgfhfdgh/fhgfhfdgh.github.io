@@ -13,48 +13,51 @@
             perspective: 1000px; /* Добавляем перспективу */
             background-color: #000000; /* Цвет фона */
             overflow: hidden; /* Скрываем переполнение */
+            touch-action: none; /* Предотвращаем прокрутку при касании */
+        }
+        #image-container {
+            width: 200px; /* Ширина контейнера */
+            height: 200px; /* Высота контейнера */
+            position: relative;
+            clip-path: polygon(0% 100%, 50% 0%, 100% 100%) /* Перевернутый треугольник */
+            overflow: hidden; /* Скрываем все, что выходит за пределы треугольника */
+            transition: transform 0.1s;
         }
 
-        #star {
-            width: 100px; /* Размер звезды */
-            height: 100px;
-            background: #FF1B60; /* Цвет звезды */
-            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-            position: absolute; /* Фиксируем звезду */
-            transition: transform 0.1s; /* Плавный переход */
-            box-shadow: 0 0 100px rgba(175, 16, 63, 0.5); /* Эффект тени */
+        #image {
+            width: 100%; /* Изображение занимает весь контейнер */
+            height: auto; /* Сохраняем пропорции изображения */
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
         .sparkle {
             position: absolute;
-            width: 5px;
-            height: 5px;
-            background-color: rgba(255, 255, 255, 0.8);
             border-radius: 50%;
-            animation: sparkle-animation 2.5s infinite;
+            background: rgba(255, 255, 255, 0.8);
+            animation: sparkleAnimation 1.5s infinite alternate;
         }
 
-        @keyframes sparkle-animation {
-            0% {
+        @keyframes sparkleAnimation {
+            from {
                 opacity: 0;
-                transform: scale(0);
+                transform: scale(0.5);
             }
 
-            50% {
+            to {
                 opacity: 1;
                 transform: scale(1);
-            }
-
-            100% {
-                opacity: 0;
-                transform: scale(0);
             }
         }
     </style>
     <title>star</title>
 </head>
 <body>
-    <div id="star"></div>
+
+    <div id="image-container">
+        <img id="image" src="void.png" alt="Image"> 
+    </div>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script src="src.js"></script>
 </body>
