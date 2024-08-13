@@ -27,6 +27,9 @@ document.addEventListener('touchmove', (e) => {
 document.addEventListener('touchend', () => {
     imageContainer.style.transform = 'rotateY(0deg) rotateX(0deg)';
 });
+document.addEventListener('touchend', () => {
+    image.style.transform = 'rotateY(0deg) rotateX(0deg)';
+});
 // Функция для создания блесток
 function createSparkles() {
     for (let i = 0; i < 20; i++) { // Создаем 20 блесток
