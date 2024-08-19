@@ -25,7 +25,8 @@
             border-radius: 50%;
             opacity: 0.3;
             animation: twinkle 5s infinite;
-            pointer-events: none; /* Чтобы не мешать взаимодействию */
+            pointer-events: none;
+            transition: transform 15s ease-out, opacity 15s ease-out;
         }
 
         @keyframes twinkle {
@@ -61,6 +62,8 @@
             max-width: 500px;
             padding: 5px 0;
             z-index: 3;
+            height: 40px; /* Уменьшенная высота панели */
+            background: rgba(0, 0, 0, 0); /* Сделать фон прозрачным */
         }
 
             .tab-bar button {
@@ -68,7 +71,7 @@
                 background-color: transparent;
                 border: none;
                 outline: none;
-                padding: 10px;
+                padding: 5px 0; /* Уменьшить отступы */
                 font-size: 16px;
                 cursor: pointer;
                 color: white;
@@ -81,7 +84,7 @@
                 .tab-bar button img {
                     width: 24px;
                     height: 24px;
-                    margin-bottom: 5px;
+                    margin-bottom: 2px; /* Уменьшить отступ между изображением и текстом */
                 }
 
                 .tab-bar button:not(:last-child)::after {
@@ -192,29 +195,35 @@
         tg.setHeaderColor('#000000');
         tg.expand();
 
-        function createStars() {
-            const starCount = 100;
-            const starContainer = document.querySelectorAll('#stars');
+        const starCount = 200; // Общее количество звезд
+        const stars = [];
+        const starContainer = document.getElementById('stars');
 
-            starContainer.forEach(container => {
-                for (let i = 0; i < starCount; i++) {
-                    const star = document.createElement('div');
-                    star.className = 'star';
-                    star.style.top = `${Math.random() * 100}%`;
-                    star.style.left = `${Math.random() * 100}%`;
-                    star.style.opacity = Math.random() * 0.3 + 0.3; // Рандомная непрозрачность
-                    star.style.animationDelay = `${Math.random() * 5}s`; // Разное время начала мерцания
-                    container.appendChild(star);
-                }
-            });
+        function createStar() {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.top = `${Math.random() * 100}%`;
+            star.style.left = `${Math.random() * 100}%`;
+            star.style.opacity = Math.random() * 0.3 + 0.3; // Рандомная непрозрачность
+            star.style.animationDelay = `${Math.random() * 5}s`; // Разное время начала мерцания
+            starContainer.appendChild(star);
+            stars.push(star);
+
+            // Установка рандомного времени жизни звезды от 5 до 20 секунд
+            const lifeSpan = Math.random() * 15000 + 5000; // Рандомное время от 5 до 20 секунд
+            setTimeout(() => {
+                star.remove();
+                stars.splice(stars.indexOf(star), 1); // Удаление звезды из массива
+                createStar(); // Создание новой звезды в случайном месте
+            }, lifeSpan); // Звезда исчезает через рандомное время
         }
 
-        createStars();
-
-        const figure = document.getElementById('figure');
-        const stars = document.querySelectorAll('.star');
+        for (let i = 0; i < starCount; i++) {
+            createStar();
+        }
 
         function handleInteraction(x, y) {
+            const maxDistance = 400; // Максимальное расстояние для эффекта
             stars.forEach(star => {
                 const starRect = star.getBoundingClientRect();
                 const starX = starRect.left + starRect.width / 2;
@@ -223,21 +232,41 @@
                 const distanceY = starY - y;
                 const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
-                const maxDistance = 400; // Максимальное расстояние для эффекта
-                const effectStrength = Math.max(0, (maxDistance - distance) / maxDistance);
-
                 if (distance < maxDistance) {
+                    const effectStrength = (maxDistance - distance) / maxDistance; // Уменьшаем влияние звезды в зависимости от расстояния
                     const moveX = (distanceX / distance) * effectStrength * 200; // Расстояние для движения
                     const moveY = (distanceY / distance) * effectStrength * 200;
 
-                    star.style.transition = 'transform 5s ease-out';
                     star.style.transform = `translate(${moveX}px, ${moveY}px)`;
-                    star.style.opacity = 0;
+                    star.style.opacity = 0.3; // Звезды не исчезают, только уменьшается их яркость
                 }
             });
+
+            setTimeout(() => {
+                stars.forEach(star => {
+                    star.style.transition = 'transform 15s ease-out, opacity 15s ease-out';
+                    const starRect = star.getBoundingClientRect();
+                    const starX = starRect.left + starRect.width / 2;
+                    const starY = starRect.top + starRect.height / 2;
+
+                    const distanceX = starX - x;
+                    const distanceY = starY - y;
+                    const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+                    const directionX = distanceX / distance;
+                    const directionY = distanceY / distance;
+
+                    const speed = Math.max(0, (maxDistance - distance) / maxDistance);
+                    const randomOffset = Math.random() * 100 - 50; // Добавление случайного отклонения
+
+                    star.style.transform = `translate(${directionX * speed * 200 + randomOffset}px, ${directionY * speed * 200 + randomOffset}px)`;
+                    star.style.opacity = Math.max(0.1, star.style.opacity - 0.1); // Уменьшение яркости звезды
+                });
+            }, 100); // Небольшая задержка перед началом анимации
+
         }
 
-        document.addEventListener('mousedown', (e) => {
+        document.addEventListener('click', (e) => {
             handleInteraction(e.clientX, e.clientY);
         });
 
@@ -246,16 +275,25 @@
             handleInteraction(touch.clientX, touch.clientY);
         });
 
-        document.querySelectorAll('.tab-button').forEach(button => {
-            button.addEventListener('click', () => {
-                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        // Навигация по вкладкам
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
 
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetTab = button.dataset.tab;
+
+                tabButtons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
-                document.getElementById(button.dataset.tab).classList.add('active');
+
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                    if (content.id === targetTab) {
+                        content.classList.add('active');
+                    }
+                });
             });
         });
     </script>
-
 </body>
 </html>
