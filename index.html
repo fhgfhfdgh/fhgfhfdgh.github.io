@@ -202,7 +202,7 @@
             star.className = 'star';
             star.style.top = `${Math.random() * 100}%`;
             star.style.left = `${Math.random() * 100}%`;
-            star.style.opacity = Math.random() * 0.3 + 0.3; // Рандомная непрозрачность
+            star.style.opacity = Math.random() * 0.4 + 0.4; // Рандомная непрозрачность
             star.style.animationDelay = `${Math.random() * 5}s`; // Разное время начала мерцания
             starContainer.appendChild(star);
             stars.push(star);
@@ -221,7 +221,7 @@
         }
 
         function handleInteraction(x, y) {
-            const maxDistance = 400; // Максимальное расстояние для эффекта
+            const maxDistance = 1500; // Максимальное расстояние для эффекта
             stars.forEach(star => {
                 const starRect = star.getBoundingClientRect();
                 const starX = starRect.left + starRect.width / 2;
@@ -232,11 +232,11 @@
 
                 if (distance < maxDistance) {
                     const effectStrength = (maxDistance - distance) / maxDistance; // Уменьшаем влияние звезды в зависимости от расстояния
-                    const moveX = (distanceX / distance) * effectStrength * 50; // Уменьшаем расстояние для движения
-                    const moveY = (distanceY / distance) * effectStrength * 50;
+                    const moveX = (distanceX / distance) * effectStrength * 100; // Уменьшаем расстояние для движения
+                    const moveY = (distanceY / distance) * effectStrength * 200;
 
-                    // Плавное движение звезд от точки касания
-                    star.style.transition = 'transform 0.5s ease-out'; // Устанавливаем плавную анимацию
+                    // Плавное движение звезд от точки касания на 15 секунд
+                    star.style.transition = 'transform 15s ease-out'; // Устанавливаем плавную анимацию на 15 секунд
                     star.style.transform = `translate(${moveX}px, ${moveY}px)`;
                 }
             });
