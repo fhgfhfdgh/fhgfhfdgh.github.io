@@ -65,6 +65,9 @@
             z-index: 3;
             height: 50px; /* Высота панели */
             background: rgba(0, 0, 0, 0); /* Прозрачный фон */
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
             .tab-bar button {
@@ -265,7 +268,7 @@
             interactionQueue.shift(); // Удаляем обработанное взаимодействие
 
             // Обрабатываем следующее взаимодействие через небольшую задержку
-            setTimeout(processInteractions, 50);
+            setTimeout(processInteractions, 0);
         }
 
         window.addEventListener('mousedown', handleTouchOrClick);
