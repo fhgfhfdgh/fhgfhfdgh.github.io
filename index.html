@@ -175,6 +175,7 @@
             -ms-user-select: none;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+            pointer-events: none; /* Запрет взаимодействия через CSS */
         }
     </style>
 </head>
@@ -202,15 +203,15 @@
 
     <div class="tab-bar">
         <button class="tab-button active" data-tab="home">
-            <img id="imgs" src="home.svg" alt="Home" style="width: 24px; height: 24px;" oncontextmenu="return false"> <!-- Размер иконок -->
+            <img class="imgs" src="home.svg" alt="Home" style="width: 24px; height: 24px;" oncontextmenu="return false"> <!-- Размер иконок -->
             Home
         </button>
         <button class="tab-button" data-tab="tasks">
-            <img id="imgs" src="tasks.svg" alt="Tasks" style="width: 24px; height: 24px;" oncontextmenu="return false"> <!-- Размер иконок -->
+            <img class="imgs" src="tasks.svg" alt="Tasks" style="width: 24px; height: 24px;" oncontextmenu="return false"> <!-- Размер иконок -->
             Tasks
         </button>
         <button class="tab-button" data-tab="frens">
-            <img id="imgs" src="frens.svg" alt="Frens" style="width: 24px; height: 24px;" oncontextmenu="return false"> <!-- Размер иконок -->
+            <img class="imgs" src="frens.svg" alt="Frens" style="width: 24px; height: 24px;" oncontextmenu="return false"> <!-- Размер иконок -->
             Frens
         </button>
     </div>
