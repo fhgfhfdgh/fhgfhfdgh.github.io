@@ -150,6 +150,17 @@
             cursor: pointer;
             font-weight: bold;
         }
+
+        /* Небо с туманностью */
+        .canvas-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; /* Не мешаем другим элементам */
+            z-index: 1; /* Слой под звездами */
+        }
     </style>
 </head>
 <body>
@@ -160,6 +171,7 @@
     </div>
 
     <div id="tasks" class="tab-content">
+        <div class="canvas-container" id="canvas-container"></div>
         <div id="stars"></div>
         <div class="header">Your Tasks</div>
         <div class="task-card">
@@ -253,17 +265,16 @@
                     const distanceY = starY - y;
                     const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
-                    const directionX = distanceX / distance;
-                    const directionY = distanceY / distance;
+                    if (distance < maxDistance) {
+                        const effectStrength = (maxDistance - distance) / maxDistance; // Уменьшаем влияние звезды в зависимости от расстояния
+                        const finalX = (distanceX / distance) * effectStrength * 200; // Конечная позиция
+                        const finalY = (distanceY / distance) * effectStrength * 200;
 
-                    const speed = Math.max(0, (maxDistance - distance) / maxDistance);
-                    const randomOffset = Math.random() * 100 - 50; // Добавление случайного отклонения
-
-                    star.style.transform = `translate(${directionX * speed * 200 + randomOffset}px, ${directionY * speed * 200 + randomOffset}px)`;
-                    star.style.opacity = Math.max(0.1, star.style.opacity - 0.1); // Уменьшение яркости звезды
+                        star.style.transform = `translate(${finalX}px, ${finalY}px)`;
+                        star.style.opacity = Math.max(0.1, star.style.opacity - 0.1); // Уменьшение яркости звезды
+                    }
                 });
             }, 100); // Небольшая задержка перед началом анимации
-
         }
 
         document.addEventListener('click', (e) => {
@@ -294,6 +305,34 @@
                 });
             });
         });
+
+        // Добавление северного сияния на вкладке Tasks
+        const canvasContainer = document.getElementById('canvas-container');
+        const canvas = document.createElement('canvas');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        canvasContainer.appendChild(canvas);
+        const ctx = canvas.getContext('2d');
+
+        function drawAurora() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, 'rgba(0, 0, 0, 0)'); // Прозрачный
+            gradient.addColorStop(0.3, 'rgba(75, 0, 130, 0.5)'); // Темный синий
+            gradient.addColorStop(0.5, 'rgba(148, 0, 211, 0.5)'); // Фиолетовый
+            gradient.addColorStop(0.7, 'rgba(255, 0, 255, 0.5)'); // Яркий фиолетовый
+            gradient.addColorStop(0.9, 'rgba(255, 20, 147, 0.5)'); // Красный
+
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function animateAurora() {
+            drawAurora();
+            requestAnimationFrame(animateAurora);
+        }
+
+        animateAurora();
     </script>
 </body>
 </html>
