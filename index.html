@@ -10,11 +10,11 @@
             overflow: hidden;
             background-color: black;
             font-family: Arial, sans-serif;
-            touch-action: none; /* ������������� ��������� */
-            -webkit-user-select: none; /* ������ �� ��������� ������ */
+            touch-action: none;
+            -webkit-user-select: none;
             -ms-user-select: none;
             user-select: none;
-            padding-bottom: 60px; /* ������ ��� ������� ����� */
+            padding-bottom: 60px;
         }
 
         .star {
@@ -22,14 +22,14 @@
             width: 2px;
             height: 2px;
             background-color: white;
-            opacity: 0;
             border-radius: 50%;
             animation: twinkle 2s infinite;
+            opacity: 0.3;
         }
 
         @keyframes twinkle {
             0%, 100% {
-                opacity: 0;
+                opacity: 0.3;
             }
 
             50% {
@@ -46,7 +46,7 @@
             transform: translate(-50%, -50%);
             transition: transform 0.1s ease-out;
             z-index: 2;
-            pointer-events: none; /* ������ �� ����������� */
+            pointer-events: none;
         }
 
         .tab-bar {
@@ -56,8 +56,6 @@
             transform: translateX(-50%);
             display: flex;
             justify-content: space-between;
-            background-color: rgba(128, 128, 128, 0.7); /* ���� �������������� */
-            border-radius: 20px; /* ����� �������� ���� */
             width: 95%;
             max-width: 500px;
             padding: 10px 0;
@@ -170,7 +168,6 @@
     <div id="frens" class="tab-content">
         <div id="stars"></div>
         <div class="header">Your Frens:</div>
-        <!-- ������ ���������� -->
     </div>
 
     <div class="tab-bar">
@@ -187,14 +184,13 @@
             Frens
         </button>
     </div>
+
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
         let tg = window.Telegram.WebApp;
         tg.setHeaderColor('#000000');
-        tg.expand() // ����� ��������� ��������� ���� �� ��� ������.
+        tg.expand()
 
-
-        // ������� ��� �������� ����
         function createStars() {
             const starCount = 100;
             const starContainer = document.querySelectorAll('#stars');
@@ -205,6 +201,7 @@
                     star.className = 'star';
                     star.style.top = `${Math.random() * 100}%`;
                     star.style.left = `${Math.random() * 100}%`;
+                    star.style.opacity = Math.random() * 0.7 + 0.3; // Рандомная непрозрачность
                     star.style.animationDelay = `${Math.random() * 2}s`;
                     container.appendChild(star);
                 }
@@ -213,34 +210,55 @@
 
         createStars();
 
-        // ������� ��� �������� ������� 3D-�����������
         const figure = document.getElementById('figure');
         let centerX = window.innerWidth / 2;
         let centerY = window.innerHeight / 2;
 
-        document.addEventListener('mousemove', (e) => {
-            updatePerspective(e.clientX, e.clientY);
+        let isSwiping = false;
+
+        document.addEventListener('touchstart', (e) => {
+            isSwiping = true;
         });
 
         document.addEventListener('touchmove', (e) => {
-            const touch = e.touches[0];
-            updatePerspective(touch.clientX, touch.clientY);
+            if (isSwiping) {
+                const touch = e.touches[0];
+                updatePerspective(touch.clientX, touch.clientY);
+            }
         });
 
-        document.addEventListener('touchend', resetPerspective);
-        document.addEventListener('mouseleave', resetPerspective);
+        document.addEventListener('touchend', () => {
+            isSwiping = false;
+            resetPerspective();
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (e.buttons === 1) {
+                updatePerspective(e.clientX, e.clientY);
+            } else {
+                resetPerspective();
+            }
+        });
 
         function updatePerspective(x, y) {
             const offsetX = ((x - centerX) / window.innerWidth) * 60;
             const offsetY = ((y - centerY) / window.innerHeight) * 60;
             figure.style.transform = `translate(-50%, -50%) rotateY(${offsetX}deg) rotateX(${-offsetY}deg)`;
+            moveStars(offsetX, offsetY);
         }
 
         function resetPerspective() {
             figure.style.transform = 'translate(-50%, -50%)';
+            moveStars(0, 0);
         }
 
-        // ������������ �������
+        function moveStars(offsetX, offsetY) {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach(star => {
+                star.style.transform = `translate(${offsetX / 5}px, ${offsetY / 5}px)`;
+            });
+        }
+
         document.querySelectorAll('.tab-button').forEach(button => {
             button.addEventListener('click', () => {
                 document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
