@@ -63,8 +63,8 @@
             max-width: 500px;
             padding: 5px 0;
             z-index: 3;
-            height: 40px; /* Уменьшенная высота панели */
-            background: rgba(0, 0, 0, 0); /* Сделать фон прозрачным */
+            height: 50px; /* Высота панели */
+            background: rgba(0, 0, 0, 0); /* Прозрачный фон */
         }
 
             .tab-bar button {
@@ -72,8 +72,8 @@
                 background-color: transparent;
                 border: none;
                 outline: none;
-                padding: 5px 0; /* Уменьшить отступы */
-                font-size: 16px;
+                padding: 5px 0; /* Уменьшенные отступы */
+                font-size: 14px; /* Уменьшенный размер текста */
                 cursor: pointer;
                 color: white;
                 position: relative;
@@ -81,12 +81,6 @@
                 flex-direction: column;
                 align-items: center;
             }
-
-                .tab-bar button img {
-                    width: 24px;
-                    height: 24px;
-                    margin-bottom: 2px; /* Уменьшить отступ между изображением и текстом */
-                }
 
                 .tab-bar button:not(:last-child)::after {
                     content: '';
@@ -178,15 +172,15 @@
 
     <div class="tab-bar">
         <button class="tab-button active" data-tab="home">
-            <img src="home.svg" alt="Home">
+            <img src="home.svg" alt="Home" style="width: 24px; height: 24px;"> <!-- Размер иконок -->
             Home
         </button>
         <button class="tab-button" data-tab="tasks">
-            <img src="tasks.svg" alt="Tasks">
+            <img src="tasks.svg" alt="Tasks" style="width: 24px; height: 24px;"> <!-- Размер иконок -->
             Tasks
         </button>
         <button class="tab-button" data-tab="frens">
-            <img src="frens.svg" alt="Frens">
+            <img src="frens.svg" alt="Frens" style="width: 24px; height: 24px;"> <!-- Размер иконок -->
             Frens
         </button>
     </div>
@@ -238,36 +232,52 @@
 
                 if (distance < maxDistance) {
                     const effectStrength = (maxDistance - distance) / maxDistance; // Уменьшаем влияние звезды в зависимости от расстояния
-                    const moveX = (distanceX / distance) * effectStrength * 200; // Расстояние для движения
-                    const moveY = (distanceY / distance) * effectStrength * 200;
+                    const moveX = (distanceX / distance) * effectStrength * 50; // Уменьшаем расстояние для движения
+                    const moveY = (distanceY / distance) * effectStrength * 50;
 
+                    // Плавное движение звезд от точки касания
+                    star.style.transition = 'transform 0.5s ease-out'; // Устанавливаем плавную анимацию
                     star.style.transform = `translate(${moveX}px, ${moveY}px)`;
-                    star.style.opacity = Math.max(0.1, star.style.opacity - 0.1); // Уменьшение яркости звезды
                 }
-            });
-
-            // Запускаем анимацию движения звезд
-            stars.forEach(star => {
-                star.style.transition = 'transform 15s ease-out, opacity 15s ease-out';
             });
         }
 
-        document.addEventListener('click', (e) => {
-            handleInteraction(e.clientX, e.clientY);
-        });
+        let interactionQueue = []; // Очередь для обработки взаимодействий
 
-        document.addEventListener('touchstart', (e) => {
-            const touch = e.touches[0];
-            handleInteraction(touch.clientX, touch.clientY);
-        });
+        function handleTouchOrClick(e) {
+            const x = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+            const y = e.type === 'touchstart' ? e.touches[0].clientY : e.clientY;
 
-        // Навигация по вкладкам
+            // Добавляем новое взаимодействие в очередь
+            interactionQueue.push({ x, y });
+
+            // Обрабатываем очередь, если она не пустая
+            if (interactionQueue.length === 1) {
+                processInteractions();
+            }
+        }
+
+        function processInteractions() {
+            if (interactionQueue.length === 0) return;
+
+            const { x, y } = interactionQueue[0];
+            handleInteraction(x, y);
+            interactionQueue.shift(); // Удаляем обработанное взаимодействие
+
+            // Обрабатываем следующее взаимодействие через небольшую задержку
+            setTimeout(processInteractions, 50);
+        }
+
+        window.addEventListener('mousedown', handleTouchOrClick);
+        window.addEventListener('touchstart', handleTouchOrClick);
+
+        // Обработка навигации
         const tabButtons = document.querySelectorAll('.tab-button');
         const tabContents = document.querySelectorAll('.tab-content');
 
         tabButtons.forEach(button => {
             button.addEventListener('click', () => {
-                const targetTab = button.dataset.tab;
+                const targetTab = button.getAttribute('data-tab');
 
                 tabButtons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
