@@ -23,8 +23,8 @@
             height: 2px;
             background-color: white;
             border-radius: 50%;
-            animation: twinkle 2s infinite;
             opacity: 0.3;
+            transition: transform 3s ease-out, opacity 3s ease-out; /* Плавное отдаление звёзд */
         }
 
         @keyframes twinkle {
@@ -51,14 +51,14 @@
 
         .tab-bar {
             position: fixed;
-            bottom: 0;
+            bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
             justify-content: space-between;
             width: 95%;
             max-width: 500px;
-            padding: 10px 0;
+            padding: 5px 0; /* Уменьшение высоты кнопок */
             z-index: 3;
         }
 
@@ -189,7 +189,7 @@
     <script>
         let tg = window.Telegram.WebApp;
         tg.setHeaderColor('#000000');
-        tg.expand()
+        tg.expand();
 
         function createStars() {
             const starCount = 100;
@@ -202,7 +202,7 @@
                     star.style.top = `${Math.random() * 100}%`;
                     star.style.left = `${Math.random() * 100}%`;
                     star.style.opacity = Math.random() * 0.7 + 0.3; // Рандомная непрозрачность
-                    star.style.animationDelay = `${Math.random() * 2}s`;
+                    star.style.transform = `translate(${(Math.random() - 0.5) * 100}px, ${(Math.random() - 0.5) * 100}px)`; // Случайное начальное смещение
                     container.appendChild(star);
                 }
             });
@@ -213,10 +213,9 @@
         const figure = document.getElementById('figure');
         let centerX = window.innerWidth / 2;
         let centerY = window.innerHeight / 2;
-
         let isSwiping = false;
 
-        document.addEventListener('touchstart', (e) => {
+        document.addEventListener('touchstart', () => {
             isSwiping = true;
         });
 
@@ -244,18 +243,28 @@
             const offsetX = ((x - centerX) / window.innerWidth) * 60;
             const offsetY = ((y - centerY) / window.innerHeight) * 60;
             figure.style.transform = `translate(-50%, -50%) rotateY(${offsetX}deg) rotateX(${-offsetY}deg)`;
-            moveStars(offsetX, offsetY);
         }
 
         function resetPerspective() {
             figure.style.transform = 'translate(-50%, -50%)';
-            moveStars(0, 0);
+            createInertiaEffect(); // Создание эффекта инерции после возврата фигуры
         }
 
-        function moveStars(offsetX, offsetY) {
+        function createInertiaEffect() {
             const stars = document.querySelectorAll('.star');
+            const figureRect = figure.getBoundingClientRect();
+
             stars.forEach(star => {
-                star.style.transform = `translate(${offsetX / 5}px, ${offsetY / 5}px)`;
+                const starRect = star.getBoundingClientRect();
+                const distanceX = starRect.left - figureRect.left;
+                const distanceY = starRect.top - figureRect.top;
+                const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+
+                if (distance < 300) {  // Радиус в 300px вокруг фигуры для влияния инерции
+                    const movementX = (Math.random() - 0.5) * (300 - distance) / 10; // Чем ближе звезда, тем сильнее смещение
+                    const movementY = (Math.random() - 0.5) * (300 - distance) / 10;
+                    star.style.transform = `translate(${movementX}px, ${movementY}px)`;
+                }
             });
         }
 
