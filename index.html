@@ -24,7 +24,7 @@
             background-color: white;
             border-radius: 50%;
             opacity: 0.3;
-            transition: transform 3s ease-out, opacity 3s ease-out; /* Плавное отдаление звёзд */
+            animation: twinkle 5s infinite; /* Мерцание звёзд */
         }
 
         @keyframes twinkle {
@@ -33,7 +33,7 @@
             }
 
             50% {
-                opacity: 1;
+                opacity: 0.5;
             }
         }
 
@@ -201,8 +201,8 @@
                     star.className = 'star';
                     star.style.top = `${Math.random() * 100}%`;
                     star.style.left = `${Math.random() * 100}%`;
-                    star.style.opacity = Math.random() * 0.7 + 0.3; // Рандомная непрозрачность
-                    star.style.transform = `translate(${(Math.random() - 0.5) * 100}px, ${(Math.random() - 0.5) * 100}px)`; // Случайное начальное смещение
+                    star.style.opacity = Math.random() * 0.3 + 0.3; // Рандомная непрозрачность
+                    star.style.animationDelay = `${Math.random() * 5}s`; // Разное время начала мерцания
                     container.appendChild(star);
                 }
             });
@@ -253,6 +253,7 @@
         function createInertiaEffect() {
             const stars = document.querySelectorAll('.star');
             const figureRect = figure.getBoundingClientRect();
+            const maxDistance = 600; // Максимальное расстояние воздействия
 
             stars.forEach(star => {
                 const starRect = star.getBoundingClientRect();
@@ -260,10 +261,15 @@
                 const distanceY = starRect.top - figureRect.top;
                 const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
-                if (distance < 300) {  // Радиус в 300px вокруг фигуры для влияния инерции
-                    const movementX = (Math.random() - 0.5) * (300 - distance) / 10; // Чем ближе звезда, тем сильнее смещение
-                    const movementY = (Math.random() - 0.5) * (300 - distance) / 10;
+                if (distance < maxDistance) {
+                    const influence = Math.max(0, (maxDistance - distance) / maxDistance);
+                    const movementX = (distanceX / distance) * influence * 100;
+                    const movementY = (distanceY / distance) * influence * 100;
                     star.style.transform = `translate(${movementX}px, ${movementY}px)`;
+                    star.style.opacity = Math.max(0.3, star.style.opacity - 0.1 * influence);
+
+                    // Плавное замедление звёзд до полной остановки
+                    star.style.transition = 'transform 5s ease-out';
                 }
             });
         }
