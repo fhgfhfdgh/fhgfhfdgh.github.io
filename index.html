@@ -24,7 +24,8 @@
             background-color: white;
             border-radius: 50%;
             opacity: 0.3;
-            animation: twinkle 5s infinite; /* Мерцание звёзд */
+            animation: twinkle 5s infinite;
+            pointer-events: none; /* Чтобы не мешать взаимодействию */
         }
 
         @keyframes twinkle {
@@ -58,7 +59,7 @@
             justify-content: space-between;
             width: 95%;
             max-width: 500px;
-            padding: 5px 0; /* Уменьшение высоты кнопок */
+            padding: 5px 0;
             z-index: 3;
         }
 
@@ -211,68 +212,39 @@
         createStars();
 
         const figure = document.getElementById('figure');
-        let centerX = window.innerWidth / 2;
-        let centerY = window.innerHeight / 2;
-        let isSwiping = false;
+        const stars = document.querySelectorAll('.star');
 
-        document.addEventListener('touchstart', () => {
-            isSwiping = true;
-        });
-
-        document.addEventListener('touchmove', (e) => {
-            if (isSwiping) {
-                const touch = e.touches[0];
-                updatePerspective(touch.clientX, touch.clientY);
-            }
-        });
-
-        document.addEventListener('touchend', () => {
-            isSwiping = false;
-            resetPerspective();
-        });
-
-        document.addEventListener('mousemove', (e) => {
-            if (e.buttons === 1) {
-                updatePerspective(e.clientX, e.clientY);
-            } else {
-                resetPerspective();
-            }
-        });
-
-        function updatePerspective(x, y) {
-            const offsetX = ((x - centerX) / window.innerWidth) * 60;
-            const offsetY = ((y - centerY) / window.innerHeight) * 60;
-            figure.style.transform = `translate(-50%, -50%) rotateY(${offsetX}deg) rotateX(${-offsetY}deg)`;
-        }
-
-        function resetPerspective() {
-            figure.style.transform = 'translate(-50%, -50%)';
-            createInertiaEffect(); // Создание эффекта инерции после возврата фигуры
-        }
-
-        function createInertiaEffect() {
-            const stars = document.querySelectorAll('.star');
-            const figureRect = figure.getBoundingClientRect();
-            const maxDistance = 600; // Максимальное расстояние воздействия
-
+        function handleInteraction(x, y) {
             stars.forEach(star => {
                 const starRect = star.getBoundingClientRect();
-                const distanceX = starRect.left - figureRect.left;
-                const distanceY = starRect.top - figureRect.top;
+                const starX = starRect.left + starRect.width / 2;
+                const starY = starRect.top + starRect.height / 2;
+                const distanceX = starX - x;
+                const distanceY = starY - y;
                 const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
-                if (distance < maxDistance) {
-                    const influence = Math.max(0, (maxDistance - distance) / maxDistance);
-                    const movementX = (distanceX / distance) * influence * 100;
-                    const movementY = (distanceY / distance) * influence * 100;
-                    star.style.transform = `translate(${movementX}px, ${movementY}px)`;
-                    star.style.opacity = Math.max(0.3, star.style.opacity - 0.1 * influence);
+                const maxDistance = 400; // Максимальное расстояние для эффекта
+                const effectStrength = Math.max(0, (maxDistance - distance) / maxDistance);
 
-                    // Плавное замедление звёзд до полной остановки
+                if (distance < maxDistance) {
+                    const moveX = (distanceX / distance) * effectStrength * 200; // Расстояние для движения
+                    const moveY = (distanceY / distance) * effectStrength * 200;
+
                     star.style.transition = 'transform 5s ease-out';
+                    star.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                    star.style.opacity = 0;
                 }
             });
         }
+
+        document.addEventListener('mousedown', (e) => {
+            handleInteraction(e.clientX, e.clientY);
+        });
+
+        document.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            handleInteraction(touch.clientX, touch.clientY);
+        });
 
         document.querySelectorAll('.tab-button').forEach(button => {
             button.addEventListener('click', () => {
