@@ -170,12 +170,24 @@
             user-select: none;
             -webkit-tap-highlight-color: transparent;
         }
+
         .imgs {
             -webkit-user-select: none;
             -ms-user-select: none;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
             pointer-events: none; /* Запрет взаимодействия через CSS */
+        }
+
+        .grad {
+            top: 0;
+            right: 0;
+            height: 100%; /* Занимает 30% высоты */
+            width: 100%; /* Занимает всю ширину страницы */
+            background: linear-gradient(to bottom left, rgba(82, 9, 209, 0.5) 0.01%, rgba(243, 40, 145, 0.5) 10%, rgba(255, 255, 255, 0) 30%); /* Линейный градиент */
+            pointer-events: none; /* Чтобы градиент не мешал взаимодействию с другими элементами */
+            z-index: -1; /* Устанавливаем градиент ниже других элементов */
+            position: absolute;
         }
     </style>
 </head>
@@ -188,6 +200,7 @@
 
     <div id="tasks" class="tab-content">
         <div id="stars"></div>
+        <div class="grad"></div>
         <div class="header">Your Tasks</div>
         <div class="task-card">
             <div class="task-icon"></div>
@@ -295,7 +308,7 @@
             handleInteraction(x, y);
             interactionQueue.shift(); // Удаляем обработанное взаимодействие
 
-            // Обрабатываем следующее взаимодействие 1через небольшую задержку1
+            // Обрабатываем следующее взаимодействие через небольшую задержку
             setTimeout(processInteractions);
         }
 
@@ -319,6 +332,13 @@
                         content.classList.add('active');
                     }
                 });
+
+                // Изменение цвета заголовка в зависимости от выбранной вкладки
+                if (targetTab === 'tasks') {
+                    tg.setHeaderColor('#5209d180'); // Цвет для вкладки "tasks"
+                } else {
+                    tg.setHeaderColor('#000000'); // Цвет по умолчанию
+                }
             });
         });
     </script>
