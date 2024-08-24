@@ -95,7 +95,7 @@
             transition: width 1s linear;
         }
 
-        .start-button {
+        .start-button, .claim-time {
             position: absolute;
             top: 0;
             left: 0;
@@ -115,7 +115,7 @@
             -ms-user-select: none;
         }
 
-            .start-button.hidden {
+            .start-button.hidden, .claim-time.hidden {
                 visibility: hidden;
                 opacity: 0;
             }
@@ -296,6 +296,7 @@
                 <div class="progress-bar" id="progressBar"></div>
                 <div class="timer" id="timer"></div>
                 <button class="start-button" id="startButton">Start</button>
+                <button class="claim-time hidden" id="claimTime">Claim</button>
             </div>
         </div>
     </div>
@@ -418,6 +419,7 @@
 
 
         const button = document.getElementById('startButton');
+        const claimTime = document.getElementById('claimTime');
         const progressBar = document.getElementById('progressBar');
         const timerDisplay = document.getElementById('timer');
         const balanceDisplay = document.getElementById('balanceDisplay');
@@ -476,7 +478,7 @@
                 requestAnimationFrame(updateTimer);
             } else {
                 clearTimer();
-                addPoints(); // Добавляем очки после завершения таймера
+                claimTime.classList.remove('hidden'); // Показываем кнопку Claim
             }
         }
 
@@ -484,10 +486,17 @@
             localStorage.removeItem('timerEndTime');
             progressBar.style.width = '100%';
             timerDisplay.classList.remove('visible');
-            button.classList.remove('hidden');
+            button.classList.add('hidden');
         }
 
-        document.getElementById('startButton').addEventListener('click', function () {
+        claimTime.addEventListener('click', function () {
+            addPoints(); // Добавляем очки после нажатия на Claim
+            claimTime.classList.add('hidden');
+            button.classList.remove('hidden'); // Снова показываем кнопку Activate
+            progressBar.style.width = '0%'; // Сброс прогресс-бара
+        });
+
+        button.addEventListener('click', function () {
             startTimer(TOTAL_TIME);
         });
 
@@ -499,12 +508,14 @@
                 const remainingTime = Math.max(0, Math.floor((endTime - Date.now()) / 1000));
                 if (remainingTime > 0) {
                     startTimer(remainingTime);
+                } else {
+                    clearTimer();
+                    claimTime.classList.remove('hidden'); // Показываем кнопку Claim, если таймер закончился
                 }
+
             }
         });
-
-
-
+                
 
 
 
@@ -539,6 +550,7 @@
                 }
             });
         });
+      
     </script>
 </body>
 </html>
