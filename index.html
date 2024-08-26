@@ -65,14 +65,34 @@
             width: 100%;
         }
 
-        .balance {
-            position: fixed;
-            width: 100%;
-            font-size: 24px;
+
+
+
+        .balance-container {
             text-align: center;
-            justify-content: space-between;
-            top: 80px;
         }
+
+
+        .balance {
+            position: absolute;
+            width: 100%;
+            font-size: 72px;
+            
+            top: 80px;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+        }
+
+        .bIcon {
+            position: relative;
+            width: 56px;
+            vertical-align: middle;
+            top: 90px;
+            left: -90px;
+        }
+
+       
+
 
         .progress-container {
             position: relative;
@@ -105,7 +125,7 @@
             border-radius: 25px;
             background-color: white; /* Цвет кнопки */
             color: black;
-            font-family: sans-serif;
+            font-family: 'Courier New', Courier, monospace;
             font-size: 24px;
             font-weight: bold;
             cursor: pointer;
@@ -124,12 +144,12 @@
             position: absolute;
             width: 100%;
             text-align: center;
-            top: 50%;
+            top: 80%;
             transform: translateY(-50%);
-            font-family: sans-serif;
+            font-family: 'Courier New', Courier, monospace;
             font-weight: bold;
-            font-size: 24px;
-            color: black;
+            font-size: 16px;
+            color: rgba(0, 0, 0, 0.6);
             visibility: hidden; /* Изначально таймер скрыт */
             z-index: 1;
             user-select: none; /* Запрещаем выделение текста на таймере */
@@ -141,6 +161,38 @@
                 visibility: visible;
             }
 
+        .earnings {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            top: 40%;
+            transform: translateY(-50%);
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            font-size: 26px;
+            color: black;
+            visibility: hidden; /* Изначально скрыт */
+            z-index: 1;
+            user-select: none; /* Запрещаем выделение текста */
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+
+            .earnings.visible {
+                visibility: visible;
+            }
+
+        .icon {
+            position: relative;
+            left: 3%;
+            bottom: 2px;
+           
+            width: 20px; /* Размер иконки, можно настроить */
+            height: 20px;
+            vertical-align: middle;
+
+            
+        }
 
 
 
@@ -282,6 +334,7 @@
             z-index: -1; /* Устанавливаем градиент ниже других элементов */
             position: absolute;
         }
+      
     </style>
 </head>
 <body>
@@ -289,12 +342,19 @@
     <div id="home" class="tab-content active">
         <div id="stars"></div>
         <img src="void.png" class="figure" id="figure">
-        <div class="balance" id="balanceDisplay">voidcoins: 0</div>
-        
+
+        <div class="balance-container">
+            <img src="void.png" id="balanceIcon" class="bIcon">
+            <div class="balance" id="balanceDisplay"></div>
+        </div>
+
         <div class="container">
             <div class="progress-container">
                 <div class="progress-bar" id="progressBar"></div>
                 <div class="timer" id="timer"></div>
+                <div class="earnings" id="earnings">
+                    <img src="black-void.png" id="earningsIcon" class="icon">
+                </div>
                 <button class="start-button" id="startButton">Start</button>
                 <button class="claim-time hidden" id="claimTime">Claim</button>
             </div>
@@ -341,8 +401,11 @@
         const starCount = 100; // Общее количество звезд
         const stars = [];
         const starContainer = document.createElement('div');
+        const earningsDisplay = document.getElementById('earnings');
         starContainer.id = 'stars';
         document.body.appendChild(starContainer);
+      
+
 
         function createStar() {
             const star = document.createElement('div');
@@ -423,6 +486,7 @@
         const progressBar = document.getElementById('progressBar');
         const timerDisplay = document.getElementById('timer');
         const balanceDisplay = document.getElementById('balanceDisplay');
+        
 
         //const TOTAL_TIME = 5 * 3600 + 45 * 60 + 30; // Пример: 5 часов, 45 минут, 30 секунд
         const TOTAL_TIME = 30;
@@ -433,7 +497,7 @@
         }
 
         function updateBalanceDisplay(balance) {
-            balanceDisplay.textContent = `Voidcoins: ${balance}`;
+            balanceDisplay.textContent = `${balance}`;
         }
 
         function saveBalance(balance) {
@@ -474,12 +538,20 @@
             const progress = ((TOTAL_TIME - remainingTime) / TOTAL_TIME) * 100;
             progressBar.style.width = progress + '%';
 
+            const earnedPoints = (POINTS_REWARD * (TOTAL_TIME - remainingTime) / TOTAL_TIME).toFixed(3);
+            earningsDisplay.textContent = earnedPoints;
+            
+            earningsDisplay.innerHTML = `<img src="black-void.png" class="icon"> ${earnedPoints}`;
+            earningsDisplay.classList.add('visible');
+
+
             if (remainingTime > 0) {
                 requestAnimationFrame(updateTimer);
             } else {
                 clearTimer();
                 claimTime.classList.remove('hidden'); // Показываем кнопку Claim
             }
+
         }
 
         function clearTimer() {
@@ -487,6 +559,9 @@
             progressBar.style.width = '100%';
             timerDisplay.classList.remove('visible');
             button.classList.add('hidden');
+            earningsDisplay.classList.remove('visible');
+            earningsDisplay.textContent = ''; // Очистка отображаемого текста
+
         }
 
         claimTime.addEventListener('click', function () {
