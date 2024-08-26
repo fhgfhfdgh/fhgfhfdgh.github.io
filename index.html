@@ -38,18 +38,7 @@
             }
         }
 
-        /* Стиль для фигуры */
-        .figure {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            transition: transform 0.1s ease-out;
-            z-index: 2;
-            pointer-events: none;
-        }
+      
 
 
 
@@ -65,30 +54,79 @@
             width: 100%;
         }
 
+        .squad {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 10px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            font-weight: bold;
+        }
+
+        .squad-button {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .squad-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 15px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            flex-shrink: 0;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .squad-title {
+            flex-grow: 1;
+        }
 
 
 
         .balance-container {
-            text-align: center;
+            
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: nowrap;
+            font-weight: bold;
+         
         }
 
 
         .balance {
-            position: absolute;
-            width: 100%;
-            font-size: 72px;
-            
-            top: 80px;
-            font-family: 'Courier New', Courier, monospace;
+            font-size: 48px;
+            font-family: Arial, sans-serif;
             font-weight: bold;
+            margin-left: 10px; /* Отступ слева от текста */
         }
 
         .bIcon {
-            position: relative;
-            width: 56px;
+            width: 48px;
             vertical-align: middle;
-            top: 90px;
-            left: -90px;
+            margin-right: 10px; /* Отступ справа от изображения */
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            order: -1; /* Поместить изображение в начало контейнера */
         }
 
        
@@ -125,7 +163,7 @@
             border-radius: 25px;
             background-color: white; /* Цвет кнопки */
             color: black;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: Arial, sans-serif;
             font-size: 24px;
             font-weight: bold;
             cursor: pointer;
@@ -146,7 +184,7 @@
             text-align: center;
             top: 80%;
             transform: translateY(-50%);
-            font-family: 'Courier New', Courier, monospace;
+            font-family: Arial, sans-serif;
             font-weight: bold;
             font-size: 16px;
             color: rgba(0, 0, 0, 0.6);
@@ -167,7 +205,7 @@
             text-align: center;
             top: 40%;
             transform: translateY(-50%);
-            font-family: 'Courier New', Courier, monospace;
+            font-family: Arial, sans-serif;
             font-weight: bold;
             font-size: 26px;
             color: black;
@@ -194,6 +232,9 @@
             
         }
 
+
+
+       
 
 
         /* Стиль для навигационной панели */
@@ -341,7 +382,13 @@
 
     <div id="home" class="tab-content active">
         <div id="stars"></div>
-        <img src="void.png" class="figure" id="figure">
+
+       
+    <div id="squad" class="squad">
+        <div class="squad-icon"></div>
+        <div class="squad-title">Your squad</div>
+        <button class="squad-button">Open</button>
+    </div>
 
         <div class="balance-container">
             <img src="void.png" id="balanceIcon" class="bIcon">
