@@ -101,7 +101,7 @@
 
         .balance-container {
             
-            padding: 20px;
+            padding-top: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -129,7 +129,38 @@
             order: -1; /* Поместить изображение в начало контейнера */
         }
 
-       
+
+
+        .star-balance-container {
+           
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: nowrap;
+            font-weight: bold;
+        }
+
+        .star-balance {
+            font-size: 22px;
+            font-family: Arial, sans-serif;
+            font-weight: bold;
+            margin-left: 5px; /* Отступ слева от текста */
+        }
+
+        .star-icon {
+            width: 26px;
+            vertical-align: middle;
+            margin-right: 5px; /* Отступ справа от изображения */
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            order: -1; /* Поместить изображение в начало контейнера */
+        }
+
+
+
+
 
 
         .progress-container {
@@ -383,16 +414,21 @@
     <div id="home" class="tab-content active">
         <div id="stars"></div>
 
-       
-    <div id="squad" class="squad">
-        <div class="squad-icon"></div>
-        <div class="squad-title">Your squad</div>
-        <button class="squad-button">Open</button>
-    </div>
+
+        <div id="squad" class="squad">
+            <div class="squad-icon"></div>
+            <div class="squad-title">Your squad</div>
+            <button class="squad-button">Open</button>
+        </div>
 
         <div class="balance-container">
-            <img src="void.png" id="balanceIcon" class="bIcon">
+            <img src="void.png"  class="bIcon">
             <div class="balance" id="balanceDisplay"></div>
+        </div>
+
+        <div class="star-balance-container">
+            <img src="star.svg"  class="star-icon">
+            <div class="star-balance" id="balanceStar">669</div>
         </div>
 
         <div class="container">
