@@ -648,8 +648,10 @@
         }
 
         claimTime.addEventListener('click', function () {
+            if (claimTime.disabled) return; // Проверяем, была ли кнопка уже нажата
             addPoints(); // Добавляем очки после нажатия на Claim
             claimTime.classList.add('hidden');
+            claimTime.disabled = true; // Деактивируем кнопку Claim
             button.classList.remove('hidden'); // Снова показываем кнопку Activate
             progressBar.style.width = '0%'; // Сброс прогресс-бара
         });
