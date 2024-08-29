@@ -402,11 +402,12 @@
             right: 0;
             height: 100%; /* Занимает 30% высоты */
             width: 100%; /* Занимает всю ширину страницы */
-            background: linear-gradient(187deg, rgba(40, 16, 80, 1) 8%, rgba(82,9,209,0.6) 13%, rgba(243,40,145,0.7) 20%, rgba(255,255,255,0) 38%, rgba(255,255,255,0) 83%, rgba(40, 16, 80, 1) 95%);
+            background: linear-gradient(187deg, rgba(40, 16, 80, 1) 5%, rgba(243,40,145,0.4) 15%, rgba(255,255,255,0) 30%, rgba(255,255,255,0) 83%,  rgba(40, 16, 80, 1) 97%);
             pointer-events: none; /* Чтобы градиент не мешал взаимодействию с другими элементами */
             z-index: -1; /* Устанавливаем градиент ниже других элементов */
             position: absolute;
         }
+       
       
     </style>
 </head>
@@ -454,6 +455,7 @@
     <div id="tasks" class="tab-content">
         <div id="stars"></div>
         <div class="grad"></div>
+       
         <div class="header">Your Tasks</div>
         <div class="task-card">
             <div class="task-icon"></div>
@@ -727,7 +729,7 @@
 
                 // Изменение цвета заголовка в зависимости от выбранной вкладки
                 if (targetTab === 'tasks') {
-                    tg.setHeaderColor('#5209d1'); // Цвет для вкладки "tasks"
+                    tg.setHeaderColor('#281050'); // Цвет для вкладки "tasks"
                 } else {
                     tg.setHeaderColor('#000000'); // Цвет по умолчанию
                 }
