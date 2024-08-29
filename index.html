@@ -149,7 +149,6 @@
         }
 
         .star-icon {
-            
             width: 32px;
             vertical-align: middle;
             margin-right: 1px; /* Отступ справа от изображения */
@@ -158,9 +157,9 @@
             user-select: none;
             -webkit-tap-highlight-color: transparent;
             order: -1; /* Поместить изображение в начало контейнера */
-            border-radius: 50%; /* Закругление углов для круглого эффекта */
-            
-            filter: drop-shadow(0 0 10px rgba(90, 77, 255, 1));
+
+
+            filter: drop-shadow(1px 1px 10px rgba(178, 65, 255, 1));
         }
 
         
@@ -403,7 +402,10 @@
             right: 0;
             height: 100%; /* Занимает 30% высоты */
             width: 100%; /* Занимает всю ширину страницы */
-            background: linear-gradient(to bottom left, rgba(82, 9, 209, 0.5) 0.01%, rgba(243, 40, 145, 0.5) 10%, rgba(255, 255, 255, 0) 30%); /* Линейный градиент */
+
+
+            
+            background: linear-gradient(190deg, rgba(82,9,209,0.4) 12%, rgba(243,40,145,0.5) 26%, rgba(255,255,255,0) 55%);
             pointer-events: none; /* Чтобы градиент не мешал взаимодействию с другими элементами */
             z-index: -1; /* Устанавливаем градиент ниже других элементов */
             position: absolute;
@@ -728,7 +730,7 @@
 
                 // Изменение цвета заголовка в зависимости от выбранной вкладки
                 if (targetTab === 'tasks') {
-                    tg.setHeaderColor('#2c0571'); // Цвет для вкладки "tasks"
+                    tg.setHeaderColor('#5209d1'); // Цвет для вкладки "tasks"
                 } else {
                     tg.setHeaderColor('#000000'); // Цвет по умолчанию
                 }
