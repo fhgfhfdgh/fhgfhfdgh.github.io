@@ -132,36 +132,38 @@
 
 
         .star-balance-container {
-           
             display: flex;
             justify-content: center;
             align-items: center;
             flex-wrap: nowrap;
             font-weight: bold;
+            
         }
 
         .star-balance {
-            font-size: 22px;
+            font-size: 26px;
             font-family: Arial, sans-serif;
             font-weight: bold;
-            margin-left: 5px; /* Отступ слева от текста */
+            margin-left: 1px; /* Отступ слева от текста */
+            
         }
 
         .star-icon {
-            width: 26px;
+            
+            width: 32px;
             vertical-align: middle;
-            margin-right: 5px; /* Отступ справа от изображения */
+            margin-right: 1px; /* Отступ справа от изображения */
             -webkit-user-select: none;
             -ms-user-select: none;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
             order: -1; /* Поместить изображение в начало контейнера */
+            border-radius: 50%; /* Закругление углов для круглого эффекта */
+            
+            filter: drop-shadow(0 0 10px rgba(90, 77, 255, 1));
         }
 
-
-
-
-
+        
 
         .progress-container {
             position: relative;
@@ -427,7 +429,13 @@
         </div>
 
         <div class="star-balance-container">
-            <img src="star.svg"  class="star-icon">
+
+            
+
+                <img src="star.svg" class="star-icon">
+
+          
+            
             <div class="star-balance" id="balanceStar">669</div>
         </div>
 
