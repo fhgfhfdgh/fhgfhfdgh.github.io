@@ -26,6 +26,9 @@
             opacity: 0.3;
             animation: twinkle 5s infinite;
             pointer-events: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         @keyframes twinkle {
@@ -38,13 +41,6 @@
             }
         }
 
-      
-
-
-
-
-
-
         .container {
             position: fixed;
             text-align: center;
@@ -52,6 +48,10 @@
             justify-content: space-between;
             bottom: 90px;
             width: 100%;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
         }
 
         .squad {
@@ -64,6 +64,10 @@
             justify-content: space-between;
             color: white;
             font-weight: bold;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
         }
 
         .squad-button {
@@ -78,6 +82,7 @@
             -ms-user-select: none;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+            pointer-events: auto;
         }
 
         .squad-icon {
@@ -91,31 +96,39 @@
             -ms-user-select: none;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+            pointer-events: none;
         }
 
         .squad-title {
             flex-grow: 1;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
         }
 
-
-
         .balance-container {
-            
             padding-top: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-wrap: nowrap;
             font-weight: bold;
-         
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
         }
-
 
         .balance {
             font-size: 48px;
             font-family: Arial, sans-serif;
             font-weight: bold;
             margin-left: 5px; /* Отступ слева от текста */
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
         }
 
         .bIcon {
@@ -127,9 +140,10 @@
             user-select: none;
             -webkit-tap-highlight-color: transparent;
             order: -1; /* Поместить изображение в начало контейнера */
+            pointer-events: none;
+            -webkit-touch-callout: none;
+            -webkit-user-drag: none;
         }
-
-
 
         .star-balance-container {
             display: flex;
@@ -137,7 +151,10 @@
             align-items: center;
             flex-wrap: nowrap;
             font-weight: bold;
-            
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
         }
 
         .star-balance {
@@ -145,7 +162,10 @@
             font-family: Arial, sans-serif;
             font-weight: bold;
             margin-left: 1px; /* Отступ слева от текста */
-            
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
         }
 
         .star-icon {
@@ -157,12 +177,11 @@
             user-select: none;
             -webkit-tap-highlight-color: transparent;
             order: -1; /* Поместить изображение в начало контейнера */
-
-
+            pointer-events: none;
             filter: drop-shadow(1px 1px 10px rgba(178, 65, 255, 1));
+            -webkit-touch-callout: none;
+            -webkit-user-drag: none;
         }
-
-        
 
         .progress-container {
             position: relative;
@@ -172,6 +191,10 @@
             background-color: rgba(255, 255, 255, 0.25);
             overflow: hidden;
             margin: 0 auto;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
         }
 
         .progress-bar {
@@ -183,6 +206,10 @@
             top: 0;
             left: 0;
             transition: width 1s linear;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
         }
 
         .start-button, .claim-time {
@@ -203,12 +230,13 @@
             user-select: none; /* Запрещаем выделение текста на кнопке */
             -webkit-user-select: none;
             -ms-user-select: none;
+            pointer-events: auto;
         }
 
-            .start-button.hidden, .claim-time.hidden {
-                visibility: hidden;
-                opacity: 0;
-            }
+        .start-button.hidden, .claim-time.hidden {
+            visibility: hidden;
+            opacity: 0;
+        }
 
         .timer {
             position: absolute;
@@ -225,11 +253,12 @@
             user-select: none; /* Запрещаем выделение текста на таймере */
             -webkit-user-select: none;
             -ms-user-select: none;
+            pointer-events: none;
         }
 
-            .timer.visible {
-                visibility: visible;
-            }
+        .timer.visible {
+            visibility: visible;
+        }
 
         .earnings {
             position: absolute;
@@ -246,12 +275,12 @@
             user-select: none; /* Запрещаем выделение текста */
             -webkit-user-select: none;
             -ms-user-select: none;
-          
+            pointer-events: none;
         }
 
-            .earnings.visible {
-                visibility: visible;
-            }
+        .earnings.visible {
+            visibility: visible;
+        }
 
         .icon {
             position: relative;
@@ -261,13 +290,13 @@
             height: 20px;
             vertical-align: middle;
             margin-right: 5px;
-           
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
+            -webkit-touch-callout: none;
+            -webkit-user-drag: none;
         }
-
-
-
-       
-
 
         /* Стиль для навигационной панели */
         .tab-bar {
@@ -289,34 +318,35 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-            .tab-bar button {
-                flex: 1;
-                background-color: transparent;
-                border: none;
-                outline: none;
-                padding: 5px 0; /* Уменьшенные отступы */
-                font-size: 14px; /* Уменьшенный размер текста */
-                cursor: pointer;
-                color: white;
-                position: relative;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                -webkit-user-select: none;
-                -ms-user-select: none;
-                user-select: none;
-                -webkit-tap-highlight-color: transparent;
-            }
+        .tab-bar button {
+            flex: 1;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            padding: 5px 0; /* Уменьшенные отступы */
+            font-size: 14px; /* Уменьшенный размер текста */
+            cursor: pointer;
+            color: white;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            pointer-events: auto;
+        }
 
-                .tab-bar button:not(:last-child)::after {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    right: 0;
-                    width: 1px;
-                    height: 100%;
-                    background-color: white;
-                }
+        .tab-bar button:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 1px;
+            height: 100%;
+            background-color: white;
+        }
 
         /* Стили для содержимого вкладок */
         .tab-content {
@@ -331,20 +361,26 @@
             -webkit-user-select: none;
             -ms-user-select: none;
             user-select: none;
+            pointer-events: none;
         }
 
-            .tab-content.active {
-                display: block;
-                -webkit-tap-highlight-color: transparent;
-                -webkit-user-select: none;
-                -ms-user-select: none;
-                user-select: none;
-            }
+        .tab-content.active {
+            display: block;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
+        }
 
         .header {
             font-size: 24px;
             font-weight: bold;
             margin: 20px;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
         }
 
         .task-card {
@@ -356,6 +392,10 @@
             align-items: center;
             justify-content: space-between;
             color: white;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
         }
 
         .task-icon {
@@ -369,10 +409,15 @@
             -ms-user-select: none;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+            pointer-events: none;
         }
 
         .task-title {
             flex-grow: 1;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
         }
 
         .claim-button {
@@ -387,6 +432,7 @@
             -ms-user-select: none;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
+            pointer-events: auto;
         }
 
         .imgs {
@@ -395,6 +441,8 @@
             user-select: none;
             -webkit-tap-highlight-color: transparent;
             pointer-events: none; /* Запрет взаимодействия через CSS */
+            -webkit-touch-callout: none;
+            -webkit-user-drag: none;
         }
 
         .grad {
@@ -407,7 +455,68 @@
             z-index: -1; /* Устанавливаем градиент ниже других элементов */
             position: absolute;
         }
-       
+
+        .frens-header {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 20px;
+            text-align: center;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
+        }
+        .frens-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            height: calc(100vh - 150px); /* Высота экрана минус высота заголовка и навигационной панели */
+            padding-bottom: 60px; /* Отступ для навигационной панели */
+        }
+
+        .frens-icon {
+            width: 200px;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
+            position: relative;
+            z-index: 1;
+            
+        }
+
+        .frens-title {
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .invite-button {
+            background-color: white;
+            color: black;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            display: block;
+            width: calc(100% - 40px);
+            margin-left: 20px;
+            margin-right: 20px;
+            position: fixed;
+            bottom: 70px; /* Отступ от нижнего края */
+            left: 0;
+            right: 0;
+            pointer-events: auto;
+        }
       
     </style>
 </head>
@@ -466,7 +575,17 @@
 
     <div id="frens" class="tab-content">
         <div id="stars"></div>
-        <div class="header">Your Frens:</div>
+        <div class="frens-header">
+            Invite frens<br />
+            and get more VOIDS
+        </div>
+        
+        <div class="frens-card">
+            <div>
+                <img src="no frens.png" class="frens-icon" />
+            </div>
+            <button class="invite-button">invite frens</button>
+        </div>
     </div>
 
     <div class="tab-bar">
