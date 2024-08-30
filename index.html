@@ -483,7 +483,7 @@
             pointer-events: none;
             position: relative;
             z-index: 1;
-            
+            top: 30%;
         }
 
         .frens-title {
@@ -498,11 +498,12 @@
         .invite-button {
             background-color: white;
             color: black;
-            padding: 10px 20px;
+            padding: 15px 20px;
             border: none;
             border-radius: 15px;
             cursor: pointer;
             font-weight: bold;
+            font-size: larger;
             -webkit-user-select: none;
             -ms-user-select: none;
             user-select: none;
@@ -512,7 +513,7 @@
             margin-left: 20px;
             margin-right: 20px;
             position: fixed;
-            bottom: 70px; /* Отступ от нижнего края */
+            bottom: 90px; /* Отступ от нижнего края */
             left: 0;
             right: 0;
             pointer-events: auto;
@@ -761,6 +762,8 @@
             } else {
                 clearTimer();
                 claimTime.classList.remove('hidden'); // Показываем кнопку Claim
+                localStorage.setItem('isClaimVisible', 'true');
+                localStorage.setItem('isClaimDisabled', 'false');
             }
 
         }
@@ -790,11 +793,10 @@
         });
 
         claimTime.addEventListener('click', function () {
-            if (claimTime.disabled) return; // Проверяем, была ли кнопка уже нажата
             addPoints(); // Добавляем очки после нажатия на Claim
             claimTime.classList.add('hidden');
-            claimTime.disabled = true; // Деактивируем кнопку Claim
-            localStorage.setItem('isClaimDisabled', 'true'); // Сохраняем состояние в локальном хранилище
+            localStorage.setItem('isClaimVisible', 'false');
+            localStorage.setItem('isClaimDisabled', 'false');
             button.classList.remove('hidden'); // Снова показываем кнопку Activate
             progressBar.style.width = '0%'; // Сброс прогресс-бара
         });
@@ -815,8 +817,9 @@
                 } else {
                     clearTimer();
                     claimTime.classList.remove('hidden'); // Показываем кнопку Claim, если таймер закончился
+                    localStorage.setItem('isClaimVisible', 'true');
+                    localStorage.setItem('isClaimDisabled', 'false');
                 }
-
             }
         });
                 
