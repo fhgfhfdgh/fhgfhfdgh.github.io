@@ -275,6 +275,7 @@
             user-select: none; /* Запрещаем выделение текста */
             -webkit-user-select: none;
             -ms-user-select: none;
+            user-select: none;
             pointer-events: none;
         }
 
@@ -518,6 +519,144 @@
             right: 0;
             pointer-events: auto;
         }
+
+        .league-button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 26px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            margin-left: 10px;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: auto;
+        }
+
+        .league-button span {
+            margin-left: 5px;
+        }
+
+        .league-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .league-header {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 48px;
+            font-weight: bold;
+        }
+
+ 
+
+.league-progress {
+    width: 80%;
+    height: 30px;
+    border-radius: 50px;
+    background-color: rgba(255, 255, 255, 0.25);
+    margin: 20px auto;
+    overflow: visible; /* Изменено с overflow: hidden */
+    position: relative;
+}
+
+
+
+
+
+
+
+.league-progress-bar {
+    height: 100%;
+    width: 0;
+    border-radius: 50px;
+    transition: width 1s linear;
+    
+}
+
+
+        .league-progress-counter {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    top: -25px; /* Добавлено: размещает счетчик над шкалой */
+    width: 100%; /* Добавлено: растягивает счетчик на всю ширину */
+    text-align: center; /* Добавлено: центрирует текст */
+}
+
+        .league-leaders {
+            flex: 1;
+            background-color: gray;
+            color: white;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .league-navigation {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+        }
+
+        .league-navigation button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: auto;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 48px;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: auto;
+        }
+
+        .league-navigation-large {
+            position: absolute;
+            top: 35%;
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+           
+        }
+
+        .league-navigation-large button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 48px;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: auto;
+        }
       
     </style>
 </head>
@@ -539,14 +678,9 @@
         </div>
 
         <div class="star-balance-container">
-
-            
-
-                <img src="star.svg" class="star-icon">
-
-          
-            
+            <img src="star.svg" class="star-icon">
             <div class="star-balance" id="balanceStar">669</div>
+            <button class="league-button" id="leagueButton">Void <span>></span></button>
         </div>
 
         <div class="container">
@@ -589,6 +723,22 @@
         </div>
     </div>
 
+    <div id="league" class="tab-content">
+        <button class="close-button" id="closeLeagueButton">&times;</button>
+        <div class="league-content">
+            <div class="league-header" id="leagueHeader">Void League</div>
+            <div class="league-progress">
+                <div class="league-progress-bar" id="leagueProgressBar"></div>
+                <div class="league-progress-counter" id="leagueProgressCounter"></div> <!-- Счетчик прогрессии -->
+            </div>
+            <div class="league-leaders" id="leagueLeaders">Лидеры лиги</div>
+            <div class="league-navigation-large">
+                <button id="prevLeague">&lt;</button>
+                <button id="nextLeague">&gt;</button>
+            </div>
+        </div>
+    </div>
+
     <div class="tab-bar">
         <button class="tab-button active" data-tab="home">
             <img class="imgs" src="home.svg" alt="Home" style="width: 24px; height: 24px;" oncontextmenu="return false"> <!-- Размер иконок -->
@@ -617,7 +767,74 @@
         starContainer.id = 'stars';
         document.body.appendChild(starContainer);
       
+        const leagues = [
+            { name: 'Void', gradient: 'linear-gradient(187deg, rgba(40, 16, 80, 1) 5%, rgba(243,40,145,0.4) 15%, rgba(255,255,255,0) 30%, rgba(255,255,255,0) 83%,  rgba(40, 16, 80, 1) 97%)', progressColor: 'rgba(255, 255, 255, 0.25)', points: 50 },
+            { name: 'Silver', gradient: 'linear-gradient(187deg, rgba(192,192,192,1) 0%, rgba(255,255,255,0) 100%)', progressColor: 'rgba(192,192,192,0.5)', points: 100 },
+            { name: 'Gold', gradient: 'linear-gradient(187deg, rgba(255,215,0,1) 0%, rgba(255,255,255,0) 100%)', progressColor: 'rgba(255,215,0,0.5)', points: 500 },
+            { name: 'Platinum', gradient: 'linear-gradient(187deg, rgba(229,228,226,1) 0%, rgba(255,255,255,0) 100%)', progressColor: 'rgba(229,228,226,0.5)', points: 2000 },
+            { name: 'Ruby', gradient: 'linear-gradient(187deg, rgba(224,17,95,1) 0%, rgba(255,255,255,0) 100%)', progressColor: 'rgba(224,17,95,0.5)', points: 5000 },
+            { name: 'Diamond', gradient: 'linear-gradient(187deg, rgba(185,242,255,1) 0%, rgba(255,255,255,0) 100%)', progressColor: 'rgba(185,242,255,0.5)', points: 10000 }
+        ];
 
+        let currentLeagueIndex = 0;
+
+        function getCurrentLeagueIndex() {
+            const userPoints = loadBalance();
+            for (let i = leagues.length - 1; i >= 0; i--) {
+                if (userPoints >= leagues[i].points) {
+                    return i;
+                }
+            }
+            return 0;
+        }
+
+        function updateLeagueDisplay() {
+            const league = leagues[currentLeagueIndex];
+            document.getElementById('leagueHeader').textContent = league.name + ' League';
+            document.getElementById('leagueProgressBar').style.backgroundColor = league.progressColor;
+            document.getElementById('league').style.background = league.gradient;
+            document.getElementById('leagueButton').textContent = league.name + ' >';
+            updateProgressBar();
+        }
+
+        function updateProgressBar() {
+    const league = leagues[currentLeagueIndex];
+    const userPoints = loadBalance();
+    const progress = Math.min((userPoints / league.points) * 100, 100);
+    document.getElementById('leagueProgressBar').style.width = progress + '%';
+    // Удалите или закомментируйте следующую строку
+    // document.getElementById('leagueProgressBar').textContent = `${userPoints}/${league.points}`;
+    document.getElementById('leagueProgressCounter').textContent = `${userPoints}/${league.points}`; // Обновление счетчика прогрессии
+}
+        function nextLeague() {
+            if (currentLeagueIndex < leagues.length - 1) {
+                currentLeagueIndex++;
+                updateLeagueDisplay();
+            }
+        }
+
+        function prevLeague() {
+            if (currentLeagueIndex > 0) {
+                currentLeagueIndex--;
+                updateLeagueDisplay();
+            }
+        }
+
+        document.getElementById('nextLeague').addEventListener('click', nextLeague);
+        document.getElementById('prevLeague').addEventListener('click', prevLeague);
+        document.getElementById('leagueButton').addEventListener('click', () => {
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById('league').classList.add('active');
+            document.querySelector('.tab-bar').style.display = 'none';
+        });
+
+        document.getElementById('closeLeagueButton').addEventListener('click', () => {
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById('home').classList.add('active');
+            document.querySelector('.tab-bar').style.display = 'flex';
+            currentLeagueIndex = getCurrentLeagueIndex();
+            updateLeagueDisplay();
+        });
 
         function createStar() {
             const star = document.createElement('div');
@@ -721,6 +938,7 @@
             currentBalance += POINTS_REWARD;
             saveBalance(currentBalance);
             updateBalanceDisplay(currentBalance);
+            updateProgressBar();
         }
 
         function formatTime(seconds) {
@@ -821,6 +1039,10 @@
                     localStorage.setItem('isClaimDisabled', 'false');
                 }
             }
+
+            // Устанавливаем текущую лигу при загрузке страницы
+            currentLeagueIndex = getCurrentLeagueIndex();
+            updateLeagueDisplay();
         });
                 
 
