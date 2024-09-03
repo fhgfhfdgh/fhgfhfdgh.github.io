@@ -1107,24 +1107,31 @@ claimButton.addEventListener('click', function () {
 
 checkButton.addEventListener('click', function () {
     if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        tg.sendData(JSON.stringify({
-            action: 'checkSubscription',
-            chatId: '@OfficialVoidCoin',
-            userId: tg.initDataUnsafe.user.id
-        }));
+        fetch('bot.js/checkSubscription', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                userId: tg.initDataUnsafe.user.id,
+                chatId: '@OfficialVoidCoin'
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.isSubscribed) {
+                addPoints(15);
+                alert('You are subscribed to the channel! You have been awarded 15 points.');
+            } else {
+                alert('You are not subscribed to the channel.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while checking the subscription.');
+        });
     } else {
         alert('Error: failed to retrieve user data.');
-    }
-});
-
-// Обработчик ответа от бота
-tg.onEvent('mainButtonClicked', function () {
-    const data = tg.initDataUnsafe.data;
-    if (data && data.isSubscribed) {
-        addPoints(15);
-        alert('You are subscribed to the channel! You have been awarded 15 points.');
-    } else {
-        alert('You are not subscribed to the channel.');
     }
 });
     </script>
