@@ -1097,43 +1097,35 @@
                 }
             });
         });
-        // Добавление функционала для кнопок Claim и Check
-        const claimButton = document.getElementById('claimButton');
-const checkButton = document.getElementById('checkButton');
+        
+    
+        document.getElementById('claimButton').addEventListener('click', function() {
+        window.open('https://t.me/OfficialVoidCoin', '_blank');
+    });
 
-claimButton.addEventListener('click', function () {
-    window.open('https://t.me/OfficialVoidCoin', '_blank');
-});
-
-checkButton.addEventListener('click', function () {
-    if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        fetch('https://github.com/fhgfhfdgh/fhgfhfdgh.github.io/blob/main/bot.js/checkSubscription', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                userId: tg.initDataUnsafe.user.id,
-                chatId: '@OfficialVoidCoin'
-            }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.isSubscribed) {
-                addPoints(15);
-                alert('You are subscribed to the channel! You have been awarded 15 points.');
-            } else {
-                alert('You are not subscribed to the channel.');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while checking the subscription.');
-        });
-    } else {
-        alert('Error: failed to retrieve user data.');
-    }
-});
+    document.getElementById('checkButton').addEventListener('click', function() {
+        // Проверяем, открыто ли приложение в Telegram
+        if (window.Telegram && window.Telegram.WebApp) {
+            // Открываем канал внутри Telegram
+            window.Telegram.WebApp.openTelegramLink('https://t.me/OfficialVoidCoin');
+            
+            // Устанавливаем таймер на 3 секунды
+            setTimeout(function() {
+                // Проверяем, остался ли пользователь в приложении
+                if (document.hidden) {
+                    // Если пользователь покинул приложение, считаем, что он подписался
+                    alert('Похоже, вы подписались на канал!');
+                } else {
+                    // Если пользователь остался в приложении, считаем, что он не подписался
+                    alert('Кажется, вы не подписались на канал. Попробуйте еще раз!');
+                }
+            }, 3000);
+        } else {
+            // Если приложение открыто не в Telegram, просто открываем ссылку
+            window.open('https://t.me/OfficialVoidCoin', '_blank');
+            alert('Пожалуйста, подпишитесь на канал и вернитесь в приложение.');
+        }
+    });
     </script>
 </body>
 </html>
