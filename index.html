@@ -772,6 +772,7 @@
     </div>
 
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script src="bot.js"></script>
     <script>
         let tg = window.Telegram.WebApp;
         tg.setHeaderColor('#000000'); // Цвет по умолчанию
@@ -1098,42 +1099,34 @@
         });
         // Добавление функционала для кнопок Claim и Check
         const claimButton = document.getElementById('claimButton');
-        const checkButton = document.getElementById('checkButton');
+const checkButton = document.getElementById('checkButton');
 
-        claimButton.addEventListener('click', function () {
-            window.open('https://t.me/OfficialVoidCoin', '_blank');
-        });
+claimButton.addEventListener('click', function () {
+    window.open('https://t.me/OfficialVoidCoin', '_blank');
+});
 
-// ... существующий код ...
-
-checkButton.addEventListener('click', function() {
+checkButton.addEventListener('click', function () {
     if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        tg.showAlert("Проверка подписки...");
-        checkSubscription();
+        tg.sendData(JSON.stringify({
+            action: 'checkSubscription',
+            chatId: '@OfficialVoidCoin',
+            userId: tg.initDataUnsafe.user.id
+        }));
     } else {
-        tg.showAlert("Ошибка: не удалось получить данные пользователя");
+        alert('Error: failed to retrieve user data.');
     }
 });
 
-function checkSubscription() {
-    // Используем метод openTelegramLink для открытия канала
-    tg.openTelegramLink("https://t.me/OfficialVoidCoin");
-    
-    // Даем пользователю время на подписку (например, 5 секунд)
-    setTimeout(() => {
-        // После задержки спрашиваем пользователя, подписался ли он
-        tg.showConfirm("Вы подписались на канал?", (confirmed) => {
-            if (confirmed) {
-                addPoints(15);
-                tg.showAlert("Отлично! Вам начислено 15 очков.");
-            } else {
-                tg.showAlert("Вы не подписались на канал. Попробуйте еще раз.");
-            }
-        });
-    }, 5000);
-}
-
-// ... существующий код ...
+// Обработчик ответа от бота
+tg.onEvent('mainButtonClicked', function () {
+    const data = tg.initDataUnsafe.data;
+    if (data && data.isSubscribed) {
+        addPoints(15);
+        alert('You are subscribed to the channel! You have been awarded 15 points.');
+    } else {
+        alert('You are not subscribed to the channel.');
+    }
+});
     </script>
 </body>
 </html>
