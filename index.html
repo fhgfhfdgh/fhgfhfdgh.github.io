@@ -1106,13 +1106,16 @@
         });
 
         checkButton.addEventListener('click', function () {
-            tg.invoke('checkChatMembership', { chat_id: 'https://t.me/OfficialVoidCoin' }, function (result) {
+            tg.getChatMember('@OfficialVoidCoin', tg.initDataUnsafe.user.id).then(function (result) {
                 if (result.status === 'member' || result.status === 'administrator' || result.status === 'creator') {
                     addPoints(15); // Добавляем 15 очков, если пользователь подписан на канал
                     alert('Вы подписаны на канал! Вам начислено 15 очков.');
                 } else {
                     alert('Вы не подписаны на канал.');
                 }
+            }).catch(function (error) {
+                console.error('Ошибка при проверке подписки:', error);
+                alert('Произошла ошибка при проверке подписки.');
             });
         });
       
