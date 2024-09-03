@@ -436,22 +436,6 @@
             pointer-events: auto;
         }
 
-        .check-button {
-            background-color: white;
-            color: black;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 15px;
-            cursor: pointer;
-            font-weight: bold;
-            -webkit-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            pointer-events: auto;
-            margin-right: 10px; /* Отступ справа от кнопки Check */
-        }
-
         .imgs {
             -webkit-user-select: none;
             -ms-user-select: none;
@@ -720,7 +704,6 @@
         <div class="task-card">
             <div class="task-icon"></div>
             <div class="task-title">Task Name</div>
-            <button class="check-button" id="checkButton">Check</button>
             <button class="claim-button" id="claimButton">Claim</button>
         </div>
     </div>
@@ -1100,10 +1083,6 @@
         
     
         document.getElementById('claimButton').addEventListener('click', function() {
-        window.open('https://t.me/OfficialVoidCoin', '_blank');
-    });
-
-    document.getElementById('checkButton').addEventListener('click', function() {
         // Проверяем, открыто ли приложение в Telegram
         if (window.Telegram && window.Telegram.WebApp) {
             // Открываем канал внутри Telegram
@@ -1121,7 +1100,7 @@
                     // Если пользователь остался в приложении, считаем, что он не подписался
                     alert('Кажется, вы не подписались на канал. Попробуйте еще раз!');
                 }
-            }, 2000);
+            }, 1500);
         } else {
             // Если приложение открыто не в Telegram, просто открываем ссылку
             window.open('https://t.me/OfficialVoidCoin', '_blank');
