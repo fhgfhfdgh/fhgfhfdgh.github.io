@@ -436,6 +436,22 @@
             pointer-events: auto;
         }
 
+        .check-button {
+            background-color: white;
+            color: black;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            pointer-events: auto;
+            margin-right: 10px; /* Отступ справа от кнопки Check */
+        }
+
         .imgs {
             -webkit-user-select: none;
             -ms-user-select: none;
@@ -704,7 +720,8 @@
         <div class="task-card">
             <div class="task-icon"></div>
             <div class="task-title">Task Name</div>
-            <button class="claim-button">Claim</button>
+            <button class="check-button" id="checkButton">Check</button>
+            <button class="claim-button" id="claimButton">Claim</button>
         </div>
     </div>
 
@@ -933,9 +950,9 @@
             localStorage.setItem('userBalance', balance);
         }
 
-        function addPoints() {
+        function addPoints(points) {
             let currentBalance = loadBalance();
-            currentBalance += POINTS_REWARD;
+            currentBalance += points;
             saveBalance(currentBalance);
             updateBalanceDisplay(currentBalance);
             updateProgressBar();
@@ -1011,7 +1028,7 @@
         });
 
         claimTime.addEventListener('click', function () {
-            addPoints(); // Добавляем очки после нажатия на Claim
+            addPoints(POINTS_REWARD); // Добавляем очки после нажатия на Claim
             claimTime.classList.add('hidden');
             localStorage.setItem('isClaimVisible', 'false');
             localStorage.setItem('isClaimDisabled', 'false');
@@ -1076,6 +1093,25 @@
                     tg.setHeaderColor('#281050'); // Цвет для вкладки "tasks"
                 } else {
                     tg.setHeaderColor('#000000'); // Цвет по умолчанию
+                }
+            });
+        });
+
+        // Добавление функционала для кнопок Claim и Check
+        const claimButton = document.getElementById('claimButton');
+        const checkButton = document.getElementById('checkButton');
+
+        claimButton.addEventListener('click', function () {
+            window.open('https://t.me/OfficialVoidCoin', '_blank');
+        });
+
+        checkButton.addEventListener('click', function () {
+            tg.invoke('checkChatMembership', { chat_id: 'https://t.me/OfficialVoidCoin' }, function (result) {
+                if (result.status === 'member' || result.status === 'administrator' || result.status === 'creator') {
+                    addPoints(15); // Добавляем 15 очков, если пользователь подписан на канал
+                    alert('Вы подписаны на канал! Вам начислено 15 очков.');
+                } else {
+                    alert('Вы не подписаны на канал.');
                 }
             });
         });
